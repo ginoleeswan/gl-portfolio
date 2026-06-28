@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#fbf7f0; --ink:#1a1622; --muted:#6f6878;
+    --myth:#6d5cff; --glow:#ff5fa2; --karma:#1fb877;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;overflow:hidden}
+  .stage{height:100vh;width:100vw;position:relative}
+  nav{display:flex;justify-content:space-between;align-items:center;padding:28px 56px}
+  nav .brand{font-family:'Bricolage Grotesque';font-weight:800;font-size:20px;letter-spacing:-.01em}
+  nav .links{display:flex;gap:26px;color:var(--muted);font-weight:600;font-size:15px}
+  .hero{padding:24px 56px 0}
+  h1{font-family:'Bricolage Grotesque';font-weight:800;font-size:76px;line-height:.96;
+    letter-spacing:-.03em;max-width:16ch}
+  h1 .pop{color:var(--glow)}
+  .sub{margin-top:22px;color:var(--muted);font-size:19px;max-width:42ch;font-weight:500}
+  .grid{margin-top:46px;display:grid;grid-template-columns:repeat(3,1fr);gap:26px;max-width:980px}
+  .tile{border-radius:34px;padding:28px;height:230px;position:relative;color:#fff;
+    box-shadow:0 18px 40px rgba(26,22,34,.14);overflow:hidden;cursor:pointer}
+  .tile .icon{width:74px;height:74px;border-radius:20px;background:rgba(255,255,255,.22);
+    display:flex;align-items:center;justify-content:center;font-size:38px;backdrop-filter:blur(4px)}
+  .tile h3{font-family:'Bricolage Grotesque';font-weight:800;font-size:27px;margin-top:auto;
+    position:absolute;left:28px;bottom:46px}
+  .tile p{position:absolute;left:28px;bottom:24px;font-size:13px;font-weight:600;opacity:.85}
+  .myth{background:linear-gradient(150deg,#7c6bff,#5a3df0)}
+  .glow{background:linear-gradient(150deg,#ff7ab0,#ff3d86)}
+  .karma{background:linear-gradient(150deg,#33c98a,#129c63)}
+  .label{position:absolute;right:56px;bottom:30px;color:var(--muted);font-size:12px;
+    font-family:'Bricolage Grotesque';font-weight:600;letter-spacing:.12em;text-transform:uppercase;opacity:.7}
+  .press{position:absolute;right:30px;top:26px;font-size:12px;color:var(--muted);font-weight:600}
+</style>
+</head>
+<body>
+  <div class="stage">
+    <nav><div class="brand">Gino &#9670;</div>
+      <div class="links"><span>Work</span><span>About</span><span>&#9728;</span></div></nav>
+    <div class="hero">
+      <h1>Gino makes apps. Three <span class="pop">real</span> ones.</h1>
+      <p class="sub">Tap one to step inside. Designer-developer, shipping to iOS, Android &amp; web.</p>
+      <div class="grid">
+        <div class="tile myth"><div class="icon">&#9889;</div><h3>Mythique</h3><p>Superhero encyclopedia</p></div>
+        <div class="tile glow"><div class="icon">&#10024;</div><h3>Glow</h3><p>Relationship wellness</p></div>
+        <div class="tile karma"><div class="icon">&#127807;</div><h3>Karma Kart</h3><p>Ethical shopping</p></div>
+      </div>
+    </div>
+    <div class="label">Direction 2 &mdash; Home Screen</div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#08080c; --fg:#f3f1f6; --muted:#8a8794;
+    --myth:#6d5cff;     /* electric violet */
+    --glow:#ff6fae;     /* warm rose */
+    --karma:#46d59e;    /* living green */
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--fg);font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;overflow:hidden}
+  .stage{position:relative;height:100vh;width:100vw;
+    background:
+      radial-gradient(900px 600px at 78% 38%, rgba(109,92,255,.16), transparent 60%),
+      radial-gradient(700px 500px at 92% 70%, rgba(255,111,174,.12), transparent 60%),
+      radial-gradient(700px 500px at 60% 80%, rgba(70,213,158,.10), transparent 60%);}
+  nav{display:flex;justify-content:space-between;align-items:center;
+    padding:30px 56px;font-family:'Space Grotesk';font-weight:600;letter-spacing:.04em}
+  nav .brand{font-size:15px;text-transform:uppercase;letter-spacing:.16em}
+  nav .links{display:flex;gap:30px;color:var(--muted);font-family:'Inter';font-weight:500;font-size:14px}
+  .wrap{display:grid;grid-template-columns:1.05fr .95fr;align-items:center;
+    height:calc(100vh - 96px);padding:0 56px}
+  h1{font-family:'Space Grotesk';font-weight:700;font-size:84px;line-height:.98;
+    letter-spacing:-.025em;max-width:11ch}
+  h1 .em{background:linear-gradient(92deg,var(--myth),var(--glow) 55%,var(--karma));
+    -webkit-background-clip:text;background-clip:text;color:transparent}
+  .sub{margin-top:26px;color:var(--muted);font-size:18px;max-width:34ch;line-height:1.5}
+  .cta{margin-top:38px;display:flex;gap:16px;align-items:center}
+  .btn{font-family:'Space Grotesk';font-weight:600;font-size:15px;padding:14px 24px;border-radius:999px;
+    background:var(--fg);color:#08080c;text-decoration:none}
+  .ghost{color:var(--muted);font-size:14px;font-family:'Inter'}
+  .stat{margin-top:54px;display:flex;align-items:center;gap:10px;color:var(--muted);font-size:13px;
+    font-family:'Space Grotesk';letter-spacing:.02em}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--karma);box-shadow:0 0 12px var(--karma)}
+  /* faux 3D triad */
+  .triad{position:relative;height:520px}
+  .orb{position:absolute;border-radius:50%;filter:saturate(1.1)}
+  .o1{width:230px;height:230px;left:120px;top:60px;
+    background:radial-gradient(circle at 32% 28%, #b9aaff, var(--myth) 46%, #2a1f6b 100%);
+    box-shadow:0 40px 120px rgba(109,92,255,.45)}
+  .o2{width:150px;height:150px;left:40px;top:250px;
+    background:radial-gradient(circle at 32% 28%, #ffc1dd, var(--glow) 48%, #7d2a55 100%);
+    box-shadow:0 30px 90px rgba(255,111,174,.4)}
+  .o3{width:120px;height:120px;left:300px;top:300px;
+    background:radial-gradient(circle at 32% 28%, #b6f4da, var(--karma) 48%, #1c6b4d 100%);
+    box-shadow:0 30px 90px rgba(70,213,158,.4)}
+  .tag{position:absolute;font-family:'Space Grotesk';font-weight:600;font-size:12px;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--muted)}
+  .t1{left:175px;top:300px}.t2{left:60px;top:410px}.t3{left:330px;top:430px}
+  .label{position:absolute;right:56px;bottom:40px;color:var(--muted);font-size:12px;
+    font-family:'Space Grotesk';letter-spacing:.14em;text-transform:uppercase;opacity:.6}
+</style>
+</head>
+<body>
+  <div class="stage">
+    <nav><div class="brand">Gino Swanepoel</div>
+      <div class="links"><span>work</span><span>about</span><span>&#9790;</span></div></nav>
+    <div class="wrap">
+      <div>
+        <h1>I build apps that feel <span class="em">handmade.</span></h1>
+        <p class="sub">Designer-developer shipping cross-platform products end to end &mdash; iOS, Android, and web.</p>
+        <div class="cta"><a class="btn" href="#">See the work</a><span class="ghost">three apps, one maker</span></div>
+        <div class="stat"><span class="dot"></span>12 public repos &middot; 5 followers &middot; live from GitHub</div>
+      </div>
+      <div class="triad">
+        <div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
+        <div class="tag t1">Mythique</div><div class="tag t2">Glow</div><div class="tag t3">Karma Kart</div>
+      </div>
+    </div>
+    <div class="label">Direction 1 &mdash; Three Worlds</div>
+  </div>
+</body>
+</html>
