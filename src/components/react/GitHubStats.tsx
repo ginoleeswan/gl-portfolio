@@ -3,7 +3,11 @@ import { fetchGitHubStats } from "../../lib/github";
 
 export default function GitHubStats({ user = "ginoleeswan" }: { user?: string }) {
   const [stats, setStats] = useState<{ publicRepos: number; followers: number } | null>(null);
-  useEffect(() => { fetchGitHubStats(user).then(setStats); }, [user]);
+  useEffect(() => {
+    fetchGitHubStats(user)
+      .then(setStats)
+      .catch(() => setStats(null));
+  }, [user]);
   if (!stats) return <span className="text-[var(--color-muted)]">GitHub: @{user}</span>;
   return (
     <span className="text-[var(--color-muted)]">

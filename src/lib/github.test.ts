@@ -15,3 +15,9 @@ test("returns null when fetch throws", async () => {
   const fakeFetch = (async () => { throw new Error("network"); }) as unknown as typeof fetch;
   expect(await fetchGitHubStats("ginoleeswan", fakeFetch)).toBeNull();
 });
+
+test("returns null when response shape is malformed", async () => {
+  const fakeFetch = (async () =>
+    ({ ok: true, json: async () => ({ message: "Not Found" }) })) as unknown as typeof fetch;
+  expect(await fetchGitHubStats("ginoleeswan", fakeFetch)).toBeNull();
+});

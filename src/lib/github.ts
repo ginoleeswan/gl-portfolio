@@ -1,9 +1,15 @@
-export async function fetchGitHubStats(user: string, fetchImpl: typeof fetch = fetch) {
+export type GitHubStats = { publicRepos: number; followers: number };
+
+export async function fetchGitHubStats(
+  user: string,
+  fetchImpl: typeof fetch = fetch,
+): Promise<GitHubStats | null> {
   try {
     const res = await fetchImpl(`https://api.github.com/users/${user}`);
     if (!res.ok) return null;
     const data = await res.json();
-    return { publicRepos: data.public_repos as number, followers: data.followers as number };
+    if (typeof data.public_repos !== "number" || typeof data.followers !== "number") return null;
+    return { publicRepos: data.public_repos, followers: data.followers };
   } catch {
     return null;
   }
