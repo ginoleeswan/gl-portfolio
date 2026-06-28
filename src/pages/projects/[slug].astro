@@ -11,23 +11,106 @@ export async function getStaticPaths() {
 }
 
 const { project } = Astro.props as { project: CollectionEntry<"projects"> };
-const { title, tagline, techStack, liveUrl, repoUrl, slug, role, year } = project.data;
+const { title, tagline, techStack, liveUrl, repoUrl, slug, role, year, accent, kana, order } = project.data;
 const { Content } = await render(project);
+
+const themes = {
+  myth: { bg: "#1b4dff", chrome: "#cfe0ff", name: "#ffffff", body: "#d4e0ff", glyph: "#37e0ff" },
+  glow: { bg: "#ff2d87", chrome: "#ffd6e8", name: "#ffffff", body: "#ffe0ee", glyph: "#ff7ab0" },
+  karma: { bg: "#c6f53f", chrome: "#2c3a08", name: "#0a0b0a", body: "#2c3a08", glyph: "#8ab02a" },
+} as const;
+const t = themes[accent];
+const no = String(order).padStart(2, "0");
 ---
+
 <BaseLayout title={title} description={tagline}>
   <Nav />
-  <main class="mx-auto max-w-3xl px-6 py-16">
-    <header style={`view-transition-name: card-${slug}`} class="rounded-2xl border border-white/10 p-8">
-      <p class="text-sm text-[var(--color-muted)]">{year} · {role}</p>
-      <h1 class="mt-2 font-[var(--font-display)] text-4xl font-extrabold">{title}</h1>
-      <p class="mt-3 text-lg text-[var(--color-muted)]">{tagline}</p>
-      <div class="mt-5 flex flex-wrap gap-2">{techStack.map((t) => <TechBadge name={t} />)}</div>
-      <div class="mt-6 flex gap-4">
-        <a href={liveUrl} target="_blank" rel="noopener" class="rounded-full bg-[var(--color-accent)] px-5 py-2 text-black">Live demo</a>
-        <a href={repoUrl} target="_blank" rel="noopener" class="rounded-full border border-white/15 px-5 py-2">GitHub</a>
+  <main>
+    <!-- DUOTONE DOSSIER HEADER -->
+    <header
+      class="halftone relative overflow-hidden px-12 pb-12 pt-16"
+      style={`view-transition-name: card-${slug}; background:
+        radial-gradient(120% 120% at 18% 0%, color-mix(in srgb, ${t.bg} 70%, white), ${t.bg} 55%, color-mix(in srgb, ${t.bg} 62%, black))`}
+    >
+      <div class="relative z-[2] mx-auto max-w-5xl">
+        <div class="flex items-center justify-between font-mono text-[11px] uppercase tracking-[0.14em]" style={`color:${t.chrome}`}>
+          <a href="/#work" style={`color:${t.chrome}`}>&#8592; Index</a>
+          <span>Dossier N&deg;{no} / {year}</span>
+        </div>
+        <div
+          class="pointer-events-none absolute right-0 top-8 font-sub text-[64px] font-black leading-none opacity-90"
+          style={`color:${t.glyph}; writing-mode: vertical-rl`}
+        >
+          {kana}
+        </div>
+        <h1 class="mt-8 font-display text-[clamp(56px,11vw,150px)] uppercase leading-[0.82] tracking-[0.01em]" style={`color:${t.name}`}>
+          {title}
+        </h1>
+        <p class="mt-4 max-w-[44ch] font-mono text-[14px] leading-relaxed" style={`color:${t.body}`}>{tagline}</p>
+        <div class="mt-6 font-mono text-[11px] uppercase tracking-[0.12em]" style={`color:${t.body}`}>{role} &middot; {year}</div>
+        <div class="mt-7 flex flex-wrap gap-3">
+          <a
+            href={liveUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="bg-void px-5 py-2.5 font-sub text-[13px] font-black uppercase tracking-[0.04em] text-acid transition-transform hover:-translate-y-0.5"
+            >Live demo &#8599;</a
+          >
+          <a
+            href={repoUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="border-2 px-5 py-2.5 font-sub text-[13px] font-black uppercase tracking-[0.04em] transition-transform hover:-translate-y-0.5"
+            style={`border-color:${t.name}; color:${t.name}`}>GitHub &#8599;</a
+          >
+        </div>
       </div>
     </header>
-    <article class="prose prose-invert mt-10 max-w-none"><Content /></article>
+
+    <!-- DOSSIER BODY -->
+    <div class="mx-auto max-w-3xl px-12 py-16">
+      <div class="mb-6 flex items-center gap-4 border-b border-line pb-3 font-mono text-[11px] uppercase tracking-[0.16em] text-steel">
+        <span class="text-acid">// Dossier</span><span>Stack</span>
+      </div>
+      <div class="mb-12 flex flex-wrap gap-2">{techStack.map((tech) => <TechBadge name={tech} />)}</div>
+      <article class="dossier"><Content /></article>
+    </div>
   </main>
   <Footer />
 </BaseLayout>
+
+<style is:global>
+  .dossier {
+    font-family: var(--font-mono);
+    color: color-mix(in srgb, var(--color-bone) 85%, transparent);
+    font-size: 14px;
+    line-height: 1.8;
+  }
+  .dossier h2 {
+    font-family: var(--font-sub);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    font-size: 22px;
+    color: var(--color-bone);
+    margin: 2.5rem 0 0.75rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-line);
+  }
+  .dossier h2::before {
+    content: "// ";
+    color: var(--color-acid);
+  }
+  .dossier p {
+    margin-bottom: 1rem;
+    max-width: 64ch;
+  }
+  .dossier a {
+    color: var(--color-acid);
+    text-underline-offset: 3px;
+    text-decoration: underline;
+  }
+  .dossier strong {
+    color: var(--color-bone);
+  }
+</style>
