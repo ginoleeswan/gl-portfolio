@@ -41,10 +41,20 @@ export default function Hero3D() {
   if (!render3D) {
     return (
       <div
-        className="halftone relative h-full w-full"
+        className="halftone relative flex h-full w-full items-center justify-center"
         style={{ background: "radial-gradient(120% 120% at 70% 20%, #1d2417, #0a0b0a 70%)" }}
         aria-hidden="true"
-      />
+      >
+        <svg viewBox="0 0 100 100" className="h-3/5 w-3/5 opacity-80" fill="none" stroke={ACID} strokeWidth={0.6}>
+          <polygon points="50,8 86,30 86,70 50,92 14,70 14,30" />
+          <polygon points="50,8 50,50 86,30" />
+          <polygon points="50,50 86,30 86,70" />
+          <polygon points="50,50 86,70 50,92" />
+          <polygon points="50,50 50,92 14,70" />
+          <polygon points="50,50 14,70 14,30" />
+          <polygon points="50,50 14,30 50,8" />
+        </svg>
+      </div>
     );
   }
   return (

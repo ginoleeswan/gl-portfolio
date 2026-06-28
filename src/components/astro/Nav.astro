@@ -1,22 +1,22 @@
 ---
 const links = [
-  { label: "Index", href: "/", match: "/" },
-  { label: "Work", href: "/#work", match: null },
-  { label: "About", href: "/about", match: "/about" },
-  { label: "Contact", href: "/#contact", match: null },
+  { label: "Index", href: "/", match: "/", mobileHidden: true },
+  { label: "Work", href: "/#work", match: null, mobileHidden: false },
+  { label: "About", href: "/about", match: "/about", mobileHidden: false },
+  { label: "Contact", href: "/#contact", match: null, mobileHidden: true },
 ];
 const pathname = Astro.url.pathname;
 ---
 <nav
-  class="sticky top-0 z-50 flex items-center justify-between border-b border-line bg-void/80 px-12 py-4 backdrop-blur"
+  class="sticky top-0 z-50 flex items-center justify-between border-b border-line bg-void/80 px-6 py-4 backdrop-blur sm:px-12"
 >
   <a href="/" class="font-sub text-sm font-black tracking-tight text-bone">
     GINO<span class="text-acid">&#9670;</span>SWANEPOEL
   </a>
-  <ul class="flex gap-6 font-mono text-[11px] uppercase tracking-[0.16em] text-steel">
+  <ul class="flex gap-4 font-mono text-[11px] uppercase tracking-[0.16em] text-steel sm:gap-6">
     {
       links.map((l) => (
-        <li>
+        <li class:list={[l.mobileHidden && "hidden sm:list-item"]}>
           <a
             href={l.href}
             class:list={["transition-colors hover:text-acid", l.match === pathname && "text-acid"]}
