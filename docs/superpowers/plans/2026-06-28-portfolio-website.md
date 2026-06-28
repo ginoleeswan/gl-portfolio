@@ -6,7 +6,9 @@
 
 **Architecture:** Statically-generated Astro site, zero-JS by default, with React 19 islands hydrated only where interactivity is needed. Project case studies live as MDX content collections. One live-data Server Island (GitHub stats). A React Three Fiber hero is the single 3D moment, lazily hydrated with a guarded fallback.
 
-**Tech Stack:** Astro 5.x, React 19, Tailwind CSS v4 (Vite plugin, CSS-first `@theme`), MDX content collections, React Three Fiber, TypeScript (strict), Vitest, ESLint + Prettier, Vercel adapter + Analytics.
+**Tech Stack:** Astro 7 (latest stable; scaffolded by `create-astro`), React 19, Tailwind CSS v4 (Vite plugin, CSS-first `@theme`), MDX content collections (glob loader), React Three Fiber, TypeScript (strict), Vitest, ESLint + Prettier, Vercel adapter + Analytics.
+
+> **Astro 7 API notes (apply throughout):** content collections use a `glob()` loader and live in `src/content.config.ts`; render entries with `render(entry)` from `astro:content` (not `entry.render()`); view transitions use `<ClientRouter />` from `astro:transitions`. Tasks 4 and 10 carry inline reminders.
 
 ## Global Constraints
 
@@ -292,7 +294,7 @@ git commit -m "feat: nav and footer with social links"
 ### Task 4: Project content collection + seed MDX
 
 **Files:**
-- Create: `src/content/config.ts`, `src/content/projects/mythique.mdx`, `src/content/projects/glow.mdx`, `src/content/projects/karma-kart.mdx`
+- Create: `src/content.config.ts`, `src/content/projects/mythique.mdx`, `src/content/projects/glow.mdx`, `src/content/projects/karma-kart.mdx`
 
 **Interfaces:**
 - Produces: a `projects` collection with this exact schema, consumed by Tasks 5–7:
@@ -301,13 +303,21 @@ git commit -m "feat: nav and footer with social links"
   heroImage: string; gallery: string[]; techStack: string[]; liveUrl: string; repoUrl: string }
 ```
 
-- [ ] **Step 1: Create `src/content/config.ts`**
+> ASTRO 7 NOTE: This project runs Astro 7. Content collections REQUIRE a `loader`
+> (the legacy `type: "content"` API is removed). The config file lives at
+> `src/content.config.ts` (NOT `src/content/config.ts`). Entries are keyed by `id`
+> (derived from filename), but each file also carries an explicit `slug` frontmatter
+> field that later tasks use via `project.data.slug`.
+
+- [ ] **Step 1: Create `src/content.config.ts`**
 
 ```ts
-import { defineCollection, z } from "astro:content";
+import { defineCollection } from "astro:content";
+import { glob } from "astro/loaders";
+import { z } from "astro/zod";
 
 const projects = defineCollection({
-  type: "content",
+  loader: glob({ pattern: "**/*.mdx", base: "./src/content/projects" }),
   schema: z.object({
     title: z.string(),
     slug: z.string(),
@@ -415,7 +425,7 @@ Conscience-driven shopping on iOS, Android, and Web, monetized with RevenueCat.
 - [ ] **Step 5: Verify schema validates**
 
 Run: `npm run build`
-Expected: build succeeds (Zod schema accepts all three files). If a URL field fails, that's the expected guardrail — fix the frontmatter.
+Expected: build succeeds (Zod schema accepts all three files). If a URL field fails, that's the expected guardrail — fix the frontmatter. (With the glob loader, Astro generates each entry's `id` from the filename, e.g. `mythique`.)
 
 - [ ] **Step 6: Commit**
 
@@ -832,9 +842,12 @@ git commit -m "feat: home page with hero, work grid, contact"
 
 - [ ] **Step 1: Create `src/pages/projects/[slug].astro`**
 
+> ASTRO 7 NOTE: render via `render(project)` imported from `astro:content` —
+> the `project.render()` method is removed in Astro 6+.
+
 ```astro
 ---
-import { getCollection, type CollectionEntry } from "astro:content";
+import { getCollection, render, type CollectionEntry } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Nav from "../../components/astro/Nav.astro";
 import Footer from "../../components/astro/Footer.astro";
@@ -847,7 +860,7 @@ export async function getStaticPaths() {
 
 const { project } = Astro.props as { project: CollectionEntry<"projects"> };
 const { title, tagline, techStack, liveUrl, repoUrl, slug, role, year } = project.data;
-const { Content } = await project.render();
+const { Content } = await render(project);
 ---
 <BaseLayout title={title} description={tagline}>
   <Nav />
