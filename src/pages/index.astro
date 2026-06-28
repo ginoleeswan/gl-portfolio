@@ -56,19 +56,27 @@ const projects = (await getCollection("projects")).sort((a, b) => a.data.order -
             </div>
             <Hero3D client:visible />
           </div>
-          <!-- operator photo specimen: swap background for a dithered duotone photo when available -->
+          <!-- operator photo specimen: 1-bit dithered portrait -->
           <div
-            class="halftone relative h-[150px] overflow-hidden border border-line"
-            style="background: radial-gradient(120% 140% at 70% 20%, #1d2417, #0a0b0a 70%)"
+            class="halftone relative h-[300px] overflow-hidden border border-line"
+            style="background: radial-gradient(120% 140% at 60% 0%, #16240f, #0a0b0a 72%)"
           >
-            <div class="absolute left-3 top-2 font-mono text-[10px] uppercase tracking-[0.1em] text-steel">
+            <img
+              src="/gino-portrait.png"
+              alt="Gino Swanepoel — 1-bit dithered portrait"
+              loading="lazy"
+              decoding="async"
+              class="pointer-events-none absolute inset-0 z-[1] h-full w-full object-cover object-top"
+            />
+            <div class="pointer-events-none absolute inset-x-0 bottom-0 z-[2] h-20 bg-gradient-to-t from-void to-transparent"></div>
+            <div class="absolute left-3 top-2 z-[3] font-mono text-[10px] uppercase tracking-[0.1em] text-steel">
               SPECIMEN_00 / OPERATOR
             </div>
-            <div class="absolute right-3 top-2 font-sub text-[26px] font-black leading-none text-acid">
+            <div class="absolute right-3 top-2 z-[3] font-sub text-[26px] font-black leading-none text-acid drop-shadow-[0_2px_6px_rgba(0,0,0,0.7)]">
               &#12463;&#12522;&#12456;&#12452;&#12479;&#12540;
             </div>
-            <div class="absolute bottom-2 left-3 font-mono text-[10px] uppercase tracking-[0.12em] text-bone">
-              G. Swanepoel &mdash; awaiting asset
+            <div class="absolute bottom-2 left-3 z-[3] font-mono text-[10px] uppercase tracking-[0.12em] text-bone">
+              G. Swanepoel &mdash; operator
             </div>
           </div>
           <div class="barcode h-7 opacity-80"></div>
