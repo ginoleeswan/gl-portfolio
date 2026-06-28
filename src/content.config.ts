@@ -14,8 +14,8 @@ const projects = defineCollection({
     heroImage: z.string(),
     gallery: z.array(z.string()).default([]),
     techStack: z.array(z.string()),
-    liveUrl: z.string().url(),
-    repoUrl: z.string().url(),
+    liveUrl: z.url(),
+    repoUrl: z.url(),
   }),
 });
 
