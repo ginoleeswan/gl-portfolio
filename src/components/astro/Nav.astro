@@ -1,0 +1,13 @@
+---
+const links = [
+  { label: "Work", href: "/#work" },
+  { label: "About", href: "/about" },
+  { label: "Contact", href: "/#contact" },
+];
+---
+<nav class="sticky top-0 z-50 flex items-center justify-between px-6 py-4 backdrop-blur">
+  <a href="/" class="font-[var(--font-display)] text-lg font-bold">Gino Swanepoel</a>
+  <ul class="flex gap-6 text-sm">
+    {links.map((l) => <li><a href={l.href} class="hover:text-[var(--color-accent)]">{l.label}</a></li>)}
+  </ul>
+</nav>
