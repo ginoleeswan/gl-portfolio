@@ -3,7 +3,7 @@
 **Date:** 2026-06-28
 **Author:** Gino Swanepoel
 **Status:** Approved (design)
-**Repo:** `gino-portfolio` (new, standalone)
+**Repo:** `gl-portfolio` (new, standalone)
 
 ## Summary
 
@@ -51,7 +51,7 @@ to use.
 ## Repository Structure
 
 ```
-gino-portfolio/
+gl-portfolio/
 ├── src/
 │   ├── pages/              # index.astro, projects/[slug].astro, about.astro, 404.astro
 │   ├── content/

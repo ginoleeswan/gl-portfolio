@@ -33,7 +33,7 @@
 
 - [ ] **Step 1: Scaffold Astro into the existing repo dir**
 
-Run from `gino-portfolio/`:
+Run from `gl-portfolio/`:
 ```bash
 npm create astro@latest . -- --template minimal --no-install --no-git --typescript strict --yes
 ```
@@ -962,7 +962,7 @@ git commit -m "feat: about and 404 pages"
 ```bash
 npx astro add sitemap --yes
 ```
-In `astro.config.mjs`, set `site: "https://gino-portfolio.vercel.app"` (update when the custom domain is chosen).
+In `astro.config.mjs`, set `site: "https://gl-portfolio.vercel.app"` (update when the custom domain is chosen).
 In `BaseLayout.astro` `<head>`, add Google Fonts for Sora + Inter:
 ```html
 <link rel="preconnect" href="https://fonts.googleapis.com" />
