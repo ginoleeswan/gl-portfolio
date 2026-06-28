@@ -19,10 +19,15 @@ const meta = buildMeta({ title, description, image });
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Sora:wght@600;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@500;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
     <ClientRouter />
   </head>
   <body>
+    <div class="grain" aria-hidden="true"></div>
+    <i class="crosshair crosshair-tl" aria-hidden="true"></i>
+    <i class="crosshair crosshair-tr" aria-hidden="true"></i>
+    <i class="crosshair crosshair-bl" aria-hidden="true"></i>
+    <i class="crosshair crosshair-br" aria-hidden="true"></i>
     <slot />
     <VercelAnalytics client:idle />
   </body>

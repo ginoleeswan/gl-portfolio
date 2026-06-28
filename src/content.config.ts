@@ -8,6 +8,8 @@ const projects = defineCollection({
     title: z.string(),
     slug: z.string(),
     tagline: z.string(),
+    accent: z.enum(["myth", "glow", "karma"]),
+    kana: z.string(),
     order: z.number(),
     year: z.string(),
     role: z.string(),

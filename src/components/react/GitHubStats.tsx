@@ -8,10 +8,18 @@ export default function GitHubStats({ user = "ginoleeswan" }: { user?: string })
       .then(setStats)
       .catch(() => setStats(null));
   }, [user]);
-  if (!stats) return <span className="text-[var(--color-muted)]">GitHub: @{user}</span>;
+  const dot = <span className="mr-2 inline-block h-[7px] w-[7px] rounded-full bg-acid align-middle" />;
+  if (!stats)
+    return (
+      <span className="font-mono text-[11px] uppercase tracking-[0.12em] text-steel">
+        {dot}GITHUB @{user}
+      </span>
+    );
   return (
-    <span className="text-[var(--color-muted)]">
-      {stats.publicRepos} public repos · {stats.followers} followers
+    <span className="font-mono text-[11px] uppercase tracking-[0.12em] text-steel">
+      {dot}
+      <span className="text-bone">{stats.publicRepos}</span> REPOS &middot;{" "}
+      <span className="text-bone">{stats.followers}</span> FOLLOWERS
     </span>
   );
 }
