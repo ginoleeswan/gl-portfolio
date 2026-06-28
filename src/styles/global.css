@@ -4,18 +4,22 @@
   /* Marathon-brutalist palette */
   --color-void: #0a0b0a;
   --color-bone: #e9e7dd;
-  --color-acid: #c6f53f;
+  --color-acid: #4de852;
   --color-flare: #ff4a1c;
   --color-steel: #7f857a;
   --color-line: #2a2d26;
-  /* per-project duotone accents */
-  --color-myth: #1b4dff;
-  --color-glow: #ff2d87;
-  --color-karma: #c6f53f;
 
-  --font-display: "Anton", system-ui, sans-serif;
+  --font-display: "Schabo", "Arial Narrow", system-ui, sans-serif;
   --font-sub: "Archivo", system-ui, sans-serif;
   --font-mono: "Space Mono", ui-monospace, monospace;
+}
+
+@font-face {
+  font-family: "Schabo";
+  src: url("/fonts/schabo-condensed.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
 }
 
 :root {
@@ -32,8 +36,8 @@ body {
   -webkit-font-smoothing: antialiased;
   /* faint technical grid */
   background-image:
-    linear-gradient(rgba(198, 245, 63, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(198, 245, 63, 0.04) 1px, transparent 1px);
+    linear-gradient(rgba(77, 232, 82, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(77, 232, 82, 0.04) 1px, transparent 1px);
   background-size: 64px 64px;
 }
 

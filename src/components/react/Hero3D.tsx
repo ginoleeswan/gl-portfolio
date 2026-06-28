@@ -3,7 +3,7 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import type { Mesh, Group } from "three";
 import { shouldRender3D, detectWebGL } from "../../lib/capabilities";
 
-const ACID = "#c6f53f";
+const ACID = "#4de852";
 
 function Specimen() {
   const group = useRef<Group>(null);
