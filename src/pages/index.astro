@@ -11,7 +11,7 @@ import { EMAIL } from "../lib/social";
 const projects = (await getCollection("projects")).sort((a, b) => a.data.order - b.data.order);
 ---
 
-<BaseLayout title="" description="Designer-developer shipping three real cross-platform apps.">
+<BaseLayout description="Designer-developer shipping three real cross-platform apps.">
   <Nav />
   <main class="mx-auto max-w-6xl px-12">
     <!-- HERO -->
@@ -42,7 +42,7 @@ const projects = (await getCollection("projects")).sort((a, b) => a.data.order -
           <div
             class="mt-auto flex flex-wrap items-center gap-6 pt-8 font-mono text-[11px] uppercase tracking-[0.1em] text-steel"
           >
-            <GitHubStats client:visible server:defer />
+            <GitHubStats client:visible />
             <span>SINCE 2021</span>
             <a href="#work" class="text-acid underline-offset-4 hover:underline">See the work &#8595;</a>
           </div>

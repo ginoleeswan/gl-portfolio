@@ -1,8 +1,10 @@
 ---
+import { Icon } from "astro-icon/components";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Nav from "../components/astro/Nav.astro";
 import Footer from "../components/astro/Footer.astro";
 import { SOCIALS, EMAIL } from "../lib/social";
+import { socialIcon } from "../lib/icons";
 ---
 
 <BaseLayout title="About" description="About Gino Swanepoel — designer-developer.">
@@ -35,9 +37,9 @@ import { SOCIALS, EMAIL } from "../lib/social";
             </p>
           </div>
           <a
-            href="/resume.pdf"
+            href={`mailto:${EMAIL}?subject=Résumé%20request`}
             class="mt-10 inline-flex items-center gap-3 bg-acid px-6 py-3 font-sub text-[14px] font-black uppercase tracking-[0.04em] text-void transition-transform hover:-translate-y-0.5"
-            >Download résumé &#8595;</a
+            >Request résumé &#8599;</a
           >
         </div>
 
@@ -49,7 +51,12 @@ import { SOCIALS, EMAIL } from "../lib/social";
               {
                 SOCIALS.map((s) => (
                   <tr class="border-b border-line">
-                    <td class="py-3 pr-4 uppercase tracking-[0.1em] text-steel">{s.label}</td>
+                    <td class="py-3 pr-4 uppercase tracking-[0.1em] text-steel">
+                      <span class="inline-flex items-center gap-2">
+                        {socialIcon(s.label) && <Icon name={socialIcon(s.label)!} class="h-3.5 w-3.5" />}
+                        {s.label}
+                      </span>
+                    </td>
                     <td class="py-3 text-right">
                       <a href={s.href} target="_blank" rel="noopener noreferrer" class="text-bone hover:text-acid">
                         OPEN &#8599;

@@ -15,7 +15,7 @@ const primary = techStack[0];
 ---
 <a
   href={`/projects/${slug}`}
-  class="halftone group relative flex min-h-[420px] flex-col overflow-hidden border border-white/15 p-6 no-underline transition-transform duration-200 hover:-translate-y-1"
+  class="halftone reveal group relative flex min-h-[420px] flex-col overflow-hidden border border-white/15 p-6 no-underline transition-transform duration-200 hover:-translate-y-1"
   style={`view-transition-name: card-${slug}; background:
     radial-gradient(120% 120% at 20% 0%, color-mix(in srgb, ${t.bg} 70%, white), ${t.bg} 55%, color-mix(in srgb, ${t.bg} 60%, black))`}
 >
@@ -39,6 +39,9 @@ const primary = techStack[0];
     style={`background: radial-gradient(circle at 35% 30%, white, ${t.glyph} 45%, ${t.bg} 100%)`}
   >
   </div>
+
+  <!-- legibility scrim for body text -->
+  <div class="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-1/2 bg-gradient-to-t from-black/55 to-transparent"></div>
 
   <div class="relative z-[2] mt-auto">
     <div class="font-mono text-[11px] font-bold uppercase tracking-[0.1em]" style={`color:${t.body}`}>

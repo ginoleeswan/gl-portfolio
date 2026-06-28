@@ -1,5 +1,7 @@
 ---
+import { Icon } from "astro-icon/components";
 import { SOCIALS, EMAIL } from "../../lib/social";
+import { socialIcon } from "../../lib/icons";
 const year = new Date().getFullYear();
 ---
 <footer class="mt-32 border-t border-line px-12 py-10 font-mono text-[11px] text-steel">
@@ -17,7 +19,13 @@ const year = new Date().getFullYear();
       {
         SOCIALS.map((s) => (
           <li>
-            <a href={s.href} target="_blank" rel="noopener noreferrer" class="transition-colors hover:text-acid">
+            <a
+              href={s.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-1.5 transition-colors hover:text-acid"
+            >
+              {socialIcon(s.label) && <Icon name={socialIcon(s.label)!} class="h-3.5 w-3.5" />}
               {s.label} &#8599;
             </a>
           </li>

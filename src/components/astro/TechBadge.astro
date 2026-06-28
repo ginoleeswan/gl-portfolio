@@ -1,4 +1,10 @@
 ---
+import { Icon } from "astro-icon/components";
+import { techIcon } from "../../lib/icons";
 const { name } = Astro.props;
+const icon = techIcon(name);
 ---
-<span class="border border-acid/60 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.1em] text-acid">{name}</span>
+<span class="inline-flex items-center gap-1.5 border border-acid/60 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.1em] text-acid">
+  {icon && <Icon name={icon} class="h-3 w-3" />}
+  {name}
+</span>
