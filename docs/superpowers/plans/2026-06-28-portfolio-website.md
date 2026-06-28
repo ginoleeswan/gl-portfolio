@@ -19,7 +19,8 @@
 - Email used on the site: `ginoleemusic@live.com`.
 - Social links: GitHub `https://github.com/ginoleeswan`, LinkedIn `https://www.linkedin.com/in/ginoswanepoel/`, X `https://twitter.com/MrGinoLee`, StackOverflow `https://stackoverflow.com/users/16642242/gino-swanepoel`.
 - Name displayed: "Gino Swanepoel".
-- Commit after every task. Work on `main` (fresh repo).
+- Package manager / runner is **Bun** (`bun install`, `bun add`, `bun run <script>`, `bunx`). Run the test suite as `bun run test` (Vitest) — never `bun test` (Bun's own runner, which we don't use). Commit the `bun.lock` lockfile.
+- Commit after every task. Work on branch `build/portfolio-implementation` (fresh repo).
 - Hero3D and GitHubStats must degrade gracefully and never break page render.
 
 ---
@@ -31,7 +32,7 @@
 - Note: repo and `.gitignore` already exist at project root.
 
 **Interfaces:**
-- Produces: a working `npm run dev` / `npm run build`; React, Vercel adapter, Tailwind v4, Vitest, ESLint, Prettier all wired. `src/styles/global.css` exports Tailwind layer + `@theme` token block consumed by all later UI tasks.
+- Produces: a working `bun run dev` / `bun run build`; React, Vercel adapter, Tailwind v4, Vitest, ESLint, Prettier all wired. `src/styles/global.css` exports Tailwind layer + `@theme` token block consumed by all later UI tasks.
 
 - [ ] **Step 1: Scaffold Astro into the existing repo dir**
 
@@ -44,17 +45,17 @@ Expected: project files created in the current directory (do not overwrite `.git
 - [ ] **Step 2: Add integrations**
 
 ```bash
-npx astro add react --yes
-npx astro add vercel --yes
-npx astro add mdx --yes
-npx astro add tailwind --yes
+bunx astro add react --yes
+bunx astro add vercel --yes
+bunx astro add mdx --yes
+bunx astro add tailwind --yes
 ```
 Expected: `@astrojs/react`, `@astrojs/vercel`, `@astrojs/mdx`, `@tailwindcss/vite` installed; `astro.config.mjs` updated with the React + MDX integrations, Vercel adapter, and the Tailwind Vite plugin.
 
 - [ ] **Step 3: Add dev tooling**
 
 ```bash
-npm i -D vitest @testing-library/react @testing-library/jest-dom jsdom \
+bun add -d vitest @testing-library/react @testing-library/jest-dom jsdom \
   eslint prettier prettier-plugin-astro eslint-plugin-astro typescript-eslint
 ```
 
@@ -89,7 +90,7 @@ import react from "@vitejs/plugin-react";
 
 export default defineConfig({
   plugins: [react()],
-  test: { environment: "jsdom", globals: true, setupFiles: ["./vitest.setup.ts"] },
+  test: { environment: "jsdom", globals: true, setupFiles: ["./vitest.setup.ts"], passWithNoTests: true },
 });
 ```
 Also create `vitest.setup.ts`:
@@ -98,7 +99,7 @@ import "@testing-library/jest-dom/vitest";
 ```
 Install the React Vite plugin used only by Vitest:
 ```bash
-npm i -D @vitejs/plugin-react
+bun add -d @vitejs/plugin-react
 ```
 
 - [ ] **Step 6: Add scripts to `package.json`**
@@ -125,7 +126,7 @@ Add `.prettierrc.json`:
 
 Run:
 ```bash
-npm run build
+bun run build
 ```
 Expected: build succeeds with no errors.
 
@@ -209,7 +210,7 @@ Append:
 
 - [ ] **Step 4: Verify build**
 
-Run: `npm run build`
+Run: `bun run build`
 Expected: build succeeds.
 
 - [ ] **Step 5: Commit**
@@ -279,7 +280,7 @@ import { SOCIALS, EMAIL } from "../../lib/social";
 
 - [ ] **Step 4: Verify build**
 
-Run: `npm run build`
+Run: `bun run build`
 Expected: build succeeds.
 
 - [ ] **Step 5: Commit**
@@ -424,7 +425,7 @@ Conscience-driven shopping on iOS, Android, and Web, monetized with RevenueCat.
 
 - [ ] **Step 5: Verify schema validates**
 
-Run: `npm run build`
+Run: `bun run build`
 Expected: build succeeds (Zod schema accepts all three files). If a URL field fails, that's the expected guardrail — fix the frontmatter. (With the glob loader, Astro generates each entry's `id` from the filename, e.g. `mythique`.)
 
 - [ ] **Step 6: Commit**
@@ -478,7 +479,7 @@ const { title, tagline, slug, techStack } = project.data;
 
 - [ ] **Step 3: Verify build**
 
-Run: `npm run build`
+Run: `bun run build`
 Expected: build succeeds.
 
 - [ ] **Step 4: Commit**
@@ -519,7 +520,7 @@ test("clicking toggles the documentElement theme", () => {
 
 - [ ] **Step 2: Run test to verify it fails**
 
-Run: `npx vitest run src/components/react/ThemeToggle.test.tsx`
+Run: `bunx vitest run src/components/react/ThemeToggle.test.tsx`
 Expected: FAIL — module not found / `ThemeToggle` undefined.
 
 - [ ] **Step 3: Write minimal implementation**
@@ -552,7 +553,7 @@ export default function ThemeToggle() {
 
 - [ ] **Step 4: Run test to verify it passes**
 
-Run: `npx vitest run src/components/react/ThemeToggle.test.tsx`
+Run: `bunx vitest run src/components/react/ThemeToggle.test.tsx`
 Expected: PASS (both tests).
 
 - [ ] **Step 5: Commit**
@@ -597,7 +598,7 @@ test("returns null when fetch throws", async () => {
 
 - [ ] **Step 2: Run test to verify it fails**
 
-Run: `npx vitest run src/lib/github.test.ts`
+Run: `bunx vitest run src/lib/github.test.ts`
 Expected: FAIL — `fetchGitHubStats` not defined.
 
 - [ ] **Step 3: Write minimal implementation**
@@ -617,7 +618,7 @@ export async function fetchGitHubStats(user: string, fetchImpl: typeof fetch = f
 
 - [ ] **Step 4: Run test to verify it passes**
 
-Run: `npx vitest run src/lib/github.test.ts`
+Run: `bunx vitest run src/lib/github.test.ts`
 Expected: PASS (all three tests).
 
 - [ ] **Step 5: Create the island component**
@@ -659,8 +660,8 @@ git commit -m "feat: GitHubStats island with tested fetch + null fallback"
 - [ ] **Step 1: Install 3D deps**
 
 ```bash
-npm i three @react-three/fiber @react-three/drei
-npm i -D @types/three
+bun add three @react-three/fiber @react-three/drei
+bun add -d @types/three
 ```
 
 - [ ] **Step 2: Write the failing test**
@@ -678,7 +679,7 @@ test("renders 3D only when capable, motion allowed, and wide enough", () => {
 
 - [ ] **Step 3: Run test to verify it fails**
 
-Run: `npx vitest run src/lib/capabilities.test.ts`
+Run: `bunx vitest run src/lib/capabilities.test.ts`
 Expected: FAIL — `shouldRender3D` not defined.
 
 - [ ] **Step 4: Write minimal implementation**
@@ -700,7 +701,7 @@ export function detectWebGL(): boolean {
 
 - [ ] **Step 5: Run test to verify it passes**
 
-Run: `npx vitest run src/lib/capabilities.test.ts`
+Run: `bunx vitest run src/lib/capabilities.test.ts`
 Expected: PASS.
 
 - [ ] **Step 6: Create `Hero3D.tsx`**
@@ -746,7 +747,7 @@ export default function Hero3D() {
 
 - [ ] **Step 7: Verify tests pass and build succeeds**
 
-Run: `npm run test && npm run build`
+Run: `bun run test && bun run build`
 Expected: all tests PASS; build succeeds.
 
 - [ ] **Step 8: Commit**
@@ -819,7 +820,7 @@ const projects = (await getCollection("projects")).sort((a, b) => a.data.order -
 
 - [ ] **Step 2: Verify build and visually check**
 
-Run: `npm run build && npm run preview`
+Run: `bun run build && bun run preview`
 Expected: build succeeds; `/` renders hero, three project cards, contact section.
 
 - [ ] **Step 3: Commit**
@@ -883,7 +884,7 @@ const { Content } = await render(project);
 
 - [ ] **Step 2: Verify build generates all three routes**
 
-Run: `npm run build`
+Run: `bun run build`
 Expected: build output lists `/projects/mythique`, `/projects/glow`, `/projects/karma-kart`.
 
 - [ ] **Step 3: Commit**
@@ -949,7 +950,7 @@ import Nav from "../components/astro/Nav.astro";
 
 - [ ] **Step 3: Verify build**
 
-Run: `npm run build`
+Run: `bun run build`
 Expected: build succeeds; `/about` and 404 produced.
 
 - [ ] **Step 4: Commit**
@@ -973,7 +974,7 @@ git commit -m "feat: about and 404 pages"
 - [ ] **Step 1: Add sitemap + fonts**
 
 ```bash
-npx astro add sitemap --yes
+bunx astro add sitemap --yes
 ```
 In `astro.config.mjs`, set `site: "https://gl-portfolio.vercel.app"` (update when the custom domain is chosen).
 In `BaseLayout.astro` `<head>`, add Google Fonts for Sora + Inter:
@@ -986,7 +987,7 @@ In `BaseLayout.astro` `<head>`, add Google Fonts for Sora + Inter:
 - [ ] **Step 2: Add Vercel Analytics**
 
 ```bash
-npm i @vercel/analytics
+bun add @vercel/analytics
 ```
 Create `src/components/react/Analytics.tsx`:
 ```tsx
@@ -999,7 +1000,7 @@ Render `<VercelAnalytics client:idle />` once in `BaseLayout.astro` before `</bo
 
 Run:
 ```bash
-npm run typecheck && npm run test && npm run build
+bun run typecheck && bun run test && bun run build
 ```
 Expected: typecheck clean, all tests PASS, build succeeds with sitemap + all routes.
 
