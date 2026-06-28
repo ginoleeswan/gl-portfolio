@@ -9,9 +9,12 @@ import mdx from '@astrojs/mdx';
 
 import tailwindcss from '@tailwindcss/vite';
 
+import sitemap from '@astrojs/sitemap';
+
 // https://astro.build/config
 export default defineConfig({
-  integrations: [react(), mdx()],
+  site: "https://gl-portfolio.vercel.app",
+  integrations: [react(), mdx(), sitemap()],
   adapter: vercel(),
 
   vite: {

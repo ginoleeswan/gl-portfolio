@@ -2,6 +2,7 @@
 import { ClientRouter } from "astro:transitions";
 import "../styles/global.css";
 import { buildMeta } from "../lib/seo";
+import VercelAnalytics from "../components/react/Analytics";
 const { title, description, image } = Astro.props;
 const meta = buildMeta({ title, description, image });
 ---
@@ -16,9 +17,13 @@ const meta = buildMeta({ title, description, image });
     <meta property="og:description" content={meta.description} />
     <meta property="og:image" content={meta.ogImage} />
     <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Sora:wght@600;800&display=swap" rel="stylesheet" />
     <ClientRouter />
   </head>
   <body>
     <slot />
+    <VercelAnalytics client:idle />
   </body>
 </html>
