@@ -1,4 +1,5 @@
 ---
+import { Icon } from "astro-icon/components";
 const links = [
   { label: "Index", href: "/", match: "/", mobileHidden: true },
   { label: "Work", href: "/#work", match: null, mobileHidden: false },
@@ -10,8 +11,9 @@ const pathname = Astro.url.pathname;
 <nav
   class="sticky top-0 z-50 flex items-center justify-between border-b border-line bg-void/80 px-6 py-4 backdrop-blur sm:px-12"
 >
-  <a href="/" class="font-sub text-sm font-black tracking-tight text-bone">
-    GINO<span class="text-acid">&#9670;</span>SWANEPOEL
+  <a href="/" class="inline-flex items-center gap-2.5 font-sub text-sm font-black tracking-tight text-bone">
+    <Icon name="gino" class="h-6 w-6 text-acid" />
+    <span>GINO SWANEPOEL</span>
   </a>
   <ul class="flex gap-4 font-mono text-[11px] uppercase tracking-[0.16em] text-steel sm:gap-6">
     {

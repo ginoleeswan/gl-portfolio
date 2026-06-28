@@ -1,4 +1,5 @@
 ---
+import { Icon } from "astro-icon/components";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Nav from "../components/astro/Nav.astro";
 import Footer from "../components/astro/Footer.astro";
@@ -6,19 +7,25 @@ import Footer from "../components/astro/Footer.astro";
 
 <BaseLayout title="Signal lost" description="Page not found.">
   <Nav />
-  <main class="mx-auto flex min-h-[70vh] max-w-5xl flex-col justify-center px-12">
-    <div class="font-mono text-[11px] uppercase tracking-[0.16em] text-acid">// Error 404 &mdash; signal lost</div>
-    <h1 class="mt-4 font-display text-[clamp(80px,22vw,280px)] uppercase leading-[0.8]">
-      4<span class="text-acid">0</span>4
-    </h1>
-    <p class="mt-2 max-w-[40ch] font-mono text-[13px] leading-relaxed text-steel">
-      The specimen you requested is off-grid. Coordinates returned null.
-    </p>
-    <a
-      href="/"
-      class="mt-8 inline-flex w-fit items-center gap-3 bg-flare px-6 py-3 font-sub text-[14px] font-black uppercase tracking-[0.04em] text-void transition-transform hover:-translate-y-0.5"
-      >Return to index &#8599;</a
-    >
+  <main class="relative mx-auto flex min-h-[70vh] max-w-5xl flex-col justify-center px-12">
+    <Icon
+      name="gino"
+      class="pointer-events-none absolute right-6 top-1/2 z-0 h-[60vh] w-auto -translate-y-1/2 text-bone opacity-[0.04]"
+    />
+    <div class="relative z-10">
+      <div class="font-mono text-[11px] uppercase tracking-[0.16em] text-acid">// Error 404 &mdash; signal lost</div>
+      <h1 class="mt-4 font-display text-[clamp(80px,22vw,280px)] uppercase leading-[0.8]">
+        4<span class="text-acid">0</span>4
+      </h1>
+      <p class="mt-2 max-w-[40ch] font-mono text-[13px] leading-relaxed text-steel">
+        The specimen you requested is off-grid. Coordinates returned null.
+      </p>
+      <a
+        href="/"
+        class="mt-8 inline-flex w-fit items-center gap-3 bg-flare px-6 py-3 font-sub text-[14px] font-black uppercase tracking-[0.04em] text-void transition-transform hover:-translate-y-0.5"
+        >Return to index &#8599;</a
+      >
+    </div>
   </main>
   <Footer />
 </BaseLayout>
