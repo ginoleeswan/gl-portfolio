@@ -1,0 +1,18 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: oklch(0.16 0.02 265);
+  --color-fg: oklch(0.97 0.01 265);
+  --color-accent: oklch(0.72 0.17 305);
+  --color-muted: oklch(0.65 0.02 265);
+  --font-display: "Sora", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+}
+
+:root { color-scheme: dark; }
+html { scroll-behavior: smooth; }
+body { background: var(--color-bg); color: var(--color-fg); font-family: var(--font-body); }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
+}
