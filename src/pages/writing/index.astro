@@ -1,0 +1,56 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Nav from "../../components/astro/Nav.astro";
+import Footer from "../../components/astro/Footer.astro";
+import { PROJECT_THEMES } from "../../lib/projectThemes";
+
+const posts = (await getCollection("writing")).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const fmt = (d: Date) => d.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
+---
+
+<BaseLayout title="Notes" description="Engineering notes — the decisions and trade-offs behind the work.">
+  <Nav />
+  <main class="mx-auto max-w-4xl px-5 sm:px-8 lg:px-12">
+    <section class="pt-10">
+      <div
+        class="flex flex-wrap items-center gap-x-6 gap-y-2 border-b border-line pb-3 font-mono text-[11px] uppercase tracking-[0.16em] text-steel"
+      >
+        <span class="text-acid">// Engineering notes</span>
+        <span class="flex-1"></span>
+        <span>{String(posts.length).padStart(2, "0")} entries</span>
+      </div>
+
+      <h1 class="mt-8 font-display text-[clamp(56px,11vw,120px)] uppercase leading-[0.85]">Notes</h1>
+      <p class="mt-5 max-w-[60ch] font-sub text-[16px] font-medium leading-[1.7] text-bone/85">
+        Not a blog &mdash; a short record of the decisions behind the work. One real trade-off per post: what the
+        constraint was, what I chose, and what it cost.
+      </p>
+
+      <div class="mt-12 border-t border-line">
+        {
+          posts.map((post) => {
+            const t = PROJECT_THEMES[post.data.project];
+            return (
+              <a href={`/writing/${post.data.slug}`} class="group block border-b border-line py-7 no-underline">
+                <div class="flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-[11px] uppercase tracking-[0.12em] text-steel">
+                  <span style={`color:${t.glyph}`}>{post.data.tags[0]}</span>
+                  <span>{fmt(post.data.date)}</span>
+                  <span>{post.data.readingMinutes} min</span>
+                </div>
+                <h2 class="mt-2 font-display text-[clamp(28px,5vw,44px)] uppercase leading-[0.9] text-bone group-hover:text-acid">
+                  {post.data.title}
+                </h2>
+                <p class="mt-2 max-w-[68ch] font-sub text-[15px] font-medium leading-[1.6] text-bone/75">{post.data.dek}</p>
+                <span class="mt-3 inline-flex items-center gap-2 font-mono text-[11px] font-bold uppercase tracking-[0.12em] text-acid">
+                  Read &#8599;
+                </span>
+              </a>
+            );
+          })
+        }
+      </div>
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>

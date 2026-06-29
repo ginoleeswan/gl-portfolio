@@ -133,6 +133,59 @@ body {
   background: repeating-linear-gradient(90deg, var(--color-acid) 0 18px, transparent 18px 30px);
 }
 
+/* long-form prose — shared by project dossiers and writing posts */
+.prose {
+  font-family: var(--font-sub);
+  font-weight: 500;
+  color: color-mix(in srgb, var(--color-bone) 88%, transparent);
+  font-size: 16px;
+  line-height: 1.7;
+}
+.prose h2 {
+  font-family: var(--font-sub);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  font-size: 22px;
+  color: var(--color-bone);
+  margin: 2.5rem 0 0.75rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--color-line);
+}
+.prose h2::before {
+  content: "// ";
+  color: var(--color-acid);
+}
+.prose p {
+  margin-bottom: 1rem;
+  max-width: 64ch;
+}
+.prose ul {
+  margin: 0 0 1.25rem;
+  padding-left: 0;
+  max-width: 64ch;
+  list-style: none;
+}
+.prose li {
+  position: relative;
+  margin-bottom: 0.6rem;
+  padding-left: 1.3rem;
+}
+.prose li::before {
+  content: "—";
+  position: absolute;
+  left: 0;
+  color: var(--color-acid);
+}
+.prose a {
+  color: var(--color-acid);
+  text-underline-offset: 3px;
+  text-decoration: underline;
+}
+.prose strong {
+  color: var(--color-bone);
+}
+
 /* scroll-driven reveal */
 @keyframes reveal-up {
   from { opacity: 0; transform: translateY(1.5rem); }

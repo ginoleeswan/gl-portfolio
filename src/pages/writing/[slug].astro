@@ -1,0 +1,70 @@
+---
+import { getCollection, render, type CollectionEntry } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Nav from "../../components/astro/Nav.astro";
+import Footer from "../../components/astro/Footer.astro";
+import { PROJECT_THEMES } from "../../lib/projectThemes";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("writing");
+  return posts.map((post) => ({ params: { slug: post.data.slug }, props: { post } }));
+}
+
+const { post } = Astro.props as { post: CollectionEntry<"writing"> };
+const { title, dek, date, project, projectSlug, readingMinutes, tags } = post.data;
+const { Content } = await render(post);
+
+const t = PROJECT_THEMES[project];
+const fmt = date.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
+
+// nicer display than the raw slug for the cross-link to the build
+const projectEntry = (await getCollection("projects")).find((p) => p.data.slug === projectSlug);
+const projectTitle = projectEntry?.data.title ?? projectSlug;
+---
+
+<BaseLayout title={title} description={dek}>
+  <Nav />
+  <main class="mx-auto max-w-3xl px-5 py-12 sm:px-8 lg:px-12">
+    <div
+      class="flex items-center justify-between border-b border-line pb-3 font-mono text-[11px] uppercase tracking-[0.14em] text-steel"
+    >
+      <a href="/writing" class="hover:text-acid">&#8592; Notes</a>
+      <span>{fmt}</span>
+    </div>
+
+    <div class="mt-8 flex flex-wrap gap-2">
+      {
+        tags.map((tag) => (
+          <span class="border border-line px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.1em]" style={`color:${t.glyph}`}>
+            {tag}
+          </span>
+        ))
+      }
+    </div>
+
+    <h1 class="mt-5 font-display text-[clamp(40px,8vw,84px)] uppercase leading-[0.85]">{title}</h1>
+    <p class="mt-5 max-w-[60ch] font-sub text-[17px] font-medium leading-[1.6] text-bone/80">{dek}</p>
+    <div class="mt-5 font-mono text-[11px] uppercase tracking-[0.12em] text-steel">
+      {readingMinutes} min read &middot; on{" "}
+      <a href={`/projects/${projectSlug}`} class="text-acid underline-offset-4 hover:underline">{projectTitle}</a>
+    </div>
+
+    <div class="mt-10 h-px w-full bg-line"></div>
+
+    <article class="prose mt-10"><Content /></article>
+
+    <a
+      href={`/projects/${projectSlug}`}
+      class="group mt-14 flex items-center justify-between gap-4 border border-line p-5 no-underline transition-colors hover:border-acid"
+    >
+      <span class="min-w-0">
+        <span class="block font-mono text-[11px] uppercase tracking-[0.16em] text-acid">// See it shipped</span>
+        <span class="mt-1 block font-sub text-[17px] font-bold text-bone group-hover:text-acid">
+          Open the {projectTitle} dossier
+        </span>
+      </span>
+      <span class="shrink-0 font-display text-[32px] leading-none text-acid">&#8599;</span>
+    </a>
+  </main>
+  <Footer />
+</BaseLayout>

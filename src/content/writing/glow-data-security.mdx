@@ -1,0 +1,52 @@
+---
+title: I don't trust my own app with your data
+slug: glow-data-security
+dek: How Glow keeps relationship data private with row-level security and Edge Functions — and the cache bug that proved why the database, not the client, has to enforce it.
+date: 2026-06-12
+project: glow
+projectSlug: glow
+readingMinutes: 4
+tags: ["Security", "Supabase", "Postgres"]
+---
+
+## The data is the sensitive part
+Glow holds the most personal thing an app can: who you care about, what you said to them, and
+when. If isolation between users ever leaks, "polished relationship app" becomes "privacy
+incident." So the design question was never *how do I fetch a user's data* — it was *where is
+the boundary that guarantees one user can never read another's*, and I decided that boundary
+should not live in my React code.
+
+## Two rules I held to
+**Isolation lives in Postgres, not the app.** Every user-owned table — people, events, glows —
+has row-level security keyed on `auth.uid()`. The database itself refuses to return another
+user's rows no matter what query the client sends. If I write a buggy `select` in the front
+end, RLS is the backstop; the app layer is *convenience*, not *security*. Trusting application
+code for isolation means every future feature is one forgotten `where user_id = …` away from a
+leak. RLS deletes that entire class of mistake.
+
+**Secrets never reach the browser.** Message generation (OpenAI) and email (Resend) run inside
+**Supabase Edge Functions**. The client calls *my* function; the function holds the key. Nothing
+secret ships in a bundle a user can open dev-tools and read. A key in a client-prefixed
+`import.meta.env` is a key you've published.
+
+## The bug that justified the whole stance
+RLS protects the database. It does **not** protect a cache sitting in the browser — and that's
+exactly where I got bitten. After signing out and into a different account, the TanStack Query
+cache still held the previous session's records, so for a beat the new user saw data that was
+never theirs. The database had behaved perfectly; the stale copy was entirely client-side.
+
+The fix was to treat the query cache as session-scoped: subscribe to Supabase auth-state changes
+and **clear the cache the instant the session changes**, so signing out can't leave a warm cache
+for the next person.
+
+What I took from it: defense in depth isn't a slogan. The database enforced isolation correctly
+*and* I still had a leak, because a second layer — the cache — had its own lifetime. Every layer
+that can hold user data needs its own answer to "what happens at logout."
+
+## Where the boundaries landed
+- **Postgres + RLS** — the source of truth for who can read what.
+- **Edge Functions** — the only place secrets live.
+- **Client cache** — treated as disposable, tied to session lifetime.
+
+The app is allowed to be wrong. The system is built so that when it is, your data still doesn't
+end up on someone else's screen.

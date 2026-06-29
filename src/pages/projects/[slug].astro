@@ -29,6 +29,9 @@ const prevNo = String(prev.order).padStart(2, "0");
 const nextNo = String(next.order).padStart(2, "0");
 const prevGlyph = PROJECT_THEMES[prev.accent].glyph;
 const nextGlyph = PROJECT_THEMES[next.accent].glyph;
+
+// the technical write-up tied to this project, if one exists
+const post = (await getCollection("writing")).find((p) => p.data.projectSlug === slug);
 ---
 
 <BaseLayout title={title} description={tagline}>
@@ -129,7 +132,25 @@ const nextGlyph = PROJECT_THEMES[next.accent].glyph;
         )
       }
 
-      <article class="dossier"><Content /></article>
+      <article class="prose"><Content /></article>
+
+      {
+        post && (
+          <a
+            href={`/writing/${post.data.slug}`}
+            class="group mt-12 flex items-center justify-between gap-4 border border-line p-5 no-underline transition-colors hover:border-acid"
+          >
+            <span class="min-w-0">
+              <span class="block font-mono text-[11px] uppercase tracking-[0.16em] text-acid">// Read the write-up</span>
+              <span class="mt-1 block font-sub text-[17px] font-bold text-bone group-hover:text-acid">{post.data.title}</span>
+              <span class="mt-1 block font-mono text-[11px] uppercase tracking-[0.1em] text-steel">
+                {post.data.readingMinutes} min read &middot; the decision behind this build
+              </span>
+            </span>
+            <span class="shrink-0 font-display text-[32px] leading-none text-acid">&#8599;</span>
+          </a>
+        )
+      }
 
       <!-- mobile prev / next -->
       <nav class="mt-16 flex items-stretch justify-between gap-3 border-t border-line pt-6 font-mono text-[11px] uppercase tracking-[0.12em] md:hidden">
@@ -209,42 +230,5 @@ const nextGlyph = PROJECT_THEMES[next.accent].glyph;
   ::view-transition-old(dossier-poster),
   ::view-transition-new(dossier-poster) {
     animation-duration: 0.55s;
-  }
-</style>
-
-<style is:global>
-  .dossier {
-    font-family: var(--font-sub);
-    font-weight: 500;
-    color: color-mix(in srgb, var(--color-bone) 88%, transparent);
-    font-size: 16px;
-    line-height: 1.7;
-  }
-  .dossier h2 {
-    font-family: var(--font-sub);
-    font-weight: 900;
-    text-transform: uppercase;
-    letter-spacing: 0.02em;
-    font-size: 22px;
-    color: var(--color-bone);
-    margin: 2.5rem 0 0.75rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid var(--color-line);
-  }
-  .dossier h2::before {
-    content: "// ";
-    color: var(--color-acid);
-  }
-  .dossier p {
-    margin-bottom: 1rem;
-    max-width: 64ch;
-  }
-  .dossier a {
-    color: var(--color-acid);
-    text-underline-offset: 3px;
-    text-decoration: underline;
-  }
-  .dossier strong {
-    color: var(--color-bone);
   }
 </style>
