@@ -29,3 +29,6 @@ pnpm-debug.log*
 
 # project tooling (git-ignored scratch/planning files)
 .superpowers/
+
+# raw capture screenshots (local only)
+public/projects/*/raw/
