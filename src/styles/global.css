@@ -118,16 +118,6 @@ body {
   pointer-events: none;
 }
 
-/* barcode motif */
-.barcode {
-  background-image: repeating-linear-gradient(
-    90deg,
-    var(--color-bone) 0 2px, transparent 2px 4px,
-    var(--color-bone) 4px 5px, transparent 5px 9px,
-    var(--color-bone) 9px 12px, transparent 12px 14px
-  );
-}
-
 /* dashed acid stripe */
 .acid-stripe {
   background: repeating-linear-gradient(90deg, var(--color-acid) 0 18px, transparent 18px 30px);

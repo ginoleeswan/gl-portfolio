@@ -3,11 +3,52 @@ import { Icon } from "astro-icon/components";
 import { SOCIALS, EMAIL } from "../../lib/social";
 import { socialIcon } from "../../lib/icons";
 const year = new Date().getFullYear();
+
+// Easter egg: the footer "barcode" is a real, scannable Code 39 of this line.
+const BARCODE_TEXT = "HIRE THE OPERATOR";
+// Code 39 patterns — 9 elements per char (bar/space/bar/…), W = wide, N = narrow.
+const CODE39: Record<string, string> = {
+  "0": "NNNWWNWNN", "1": "WNNWNNNNW", "2": "NNWWNNNNW", "3": "WNWWNNNNN",
+  "4": "NNNWWNNNW", "5": "WNNWWNNNN", "6": "NNWWWNNNN", "7": "NNNWNNWNW",
+  "8": "WNNWNNWNN", "9": "NNWWNNWNN", A: "WNNNNWNNW", B: "NNWNNWNNW",
+  C: "WNWNNWNNN", D: "NNNNWWNNW", E: "WNNNWWNNN", F: "NNWNWWNNN",
+  G: "NNNNNWWNW", H: "WNNNNWWNN", I: "NNWNNWWNN", J: "NNNNWWWNN",
+  K: "WNNNNNNWW", L: "NNWNNNNWW", M: "WNWNNNNWN", N: "NNNNWNNWW",
+  O: "WNNNWNNWN", P: "NNWNWNNWN", Q: "NNNNNNWWW", R: "WNNNNNWWN",
+  S: "NNWNNNWWN", T: "NNNNWNWWN", U: "WWNNNNNNW", V: "NWWNNNNNW",
+  W: "WWWNNNNNN", X: "NWNNWNNNW", Y: "WWNNWNNNN", Z: "NWWNWNNNN",
+  "-": "NWNNNNWNW", ".": "WWNNNNWNN", " ": "NWWNNNWNN", "*": "NWNNWNWNN",
+};
+function code39(text: string) {
+  const data = `*${text}*`;
+  const narrow = 1, wide = 3, gap = 1, quiet = 10;
+  const bars: { x: number; w: number }[] = [];
+  let x = quiet;
+  [...data].forEach((ch, idx) => {
+    const pattern = CODE39[ch] ?? CODE39[" "];
+    for (let i = 0; i < pattern.length; i++) {
+      const w = pattern[i] === "W" ? wide : narrow;
+      if (i % 2 === 0) bars.push({ x, w }); // even index = bar
+      x += w;
+    }
+    if (idx < data.length - 1) x += gap; // inter-character narrow gap
+  });
+  return { bars, width: x + quiet };
+}
+const bc = code39(BARCODE_TEXT);
 ---
 <footer class="mt-32 border-t border-line px-5 py-10 font-mono text-[11px] text-steel sm:px-8 lg:px-12">
   <div class="mb-8 flex items-end justify-between gap-6">
     <div class="acid-stripe h-2 w-40"></div>
-    <div class="barcode h-8 w-44 opacity-80"></div>
+    <svg
+      class="h-8 w-44 opacity-80"
+      viewBox={`0 0 ${bc.width} 100`}
+      preserveAspectRatio="none"
+      role="img"
+      aria-label={`Barcode — ${BARCODE_TEXT}`}
+    >
+      {bc.bars.map((b) => <rect x={b.x} y="0" width={b.w} height="100" fill="var(--color-bone)" />)}
+    </svg>
   </div>
   <div class="flex flex-wrap items-start justify-between gap-6 uppercase tracking-[0.12em]">
     <div class="space-y-1">
