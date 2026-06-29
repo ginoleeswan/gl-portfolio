@@ -21,13 +21,20 @@ const VIGNETTE = "radial-gradient(125% 125% at 50% 32%, #000 28%, transparent 86
  */
 export default function Backdrop({ mode = "dither" }: { mode?: Mode }) {
   const [show, setShow] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    setShow(shouldRender3D({ webgl: detectWebGL(), reducedMotion, width: window.innerWidth }));
+    setIsMobile(window.innerWidth < 768);
+    setShow(shouldRender3D({ webgl: detectWebGL(), reducedMotion }));
   }, []);
 
   if (!show) return null;
+
+  // On phones the field reads as noise on a small screen, so pull it back and
+  // coarsen the grain — quieter atmosphere, lighter on the GPU.
+  const baseOpacity = mode === "dither" ? 0.32 : 0.55;
+  const opacity = isMobile ? baseOpacity * 0.62 : baseOpacity;
 
   return (
     <div
@@ -35,7 +42,7 @@ export default function Backdrop({ mode = "dither" }: { mode?: Mode }) {
       aria-hidden="true"
       style={{
         mixBlendMode: "screen",
-        opacity: mode === "dither" ? 0.32 : 0.55,
+        opacity,
         maskImage: VIGNETTE,
         WebkitMaskImage: VIGNETTE,
       }}
@@ -47,13 +54,13 @@ export default function Backdrop({ mode = "dither" }: { mode?: Mode }) {
           waveFrequency={2.4}
           waveAmplitude={0.28}
           colorNum={4}
-          pixelSize={2}
+          pixelSize={isMobile ? 3 : 2}
         />
       ) : (
         <PixelBlast
           variant="square"
           color="#9ca2d2"
-          pixelSize={5}
+          pixelSize={isMobile ? 6 : 5}
           pixelSizeJitter={0.4}
           patternScale={2}
           patternDensity={1}

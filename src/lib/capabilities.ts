@@ -1,5 +1,7 @@
-export function shouldRender3D(opts: { webgl: boolean; reducedMotion: boolean; width: number }): boolean {
-  return opts.webgl && !opts.reducedMotion && opts.width >= 768;
+export function shouldRender3D(opts: { webgl: boolean; reducedMotion: boolean }): boolean {
+  // Render 3D on any viewport (mobile included) when the device supports WebGL
+  // and the user hasn't asked to reduce motion.
+  return opts.webgl && !opts.reducedMotion;
 }
 
 export function detectWebGL(): boolean {

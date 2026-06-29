@@ -35,7 +35,7 @@ export default function Hero3D() {
   const [render3D, setRender3D] = useState(false);
   useEffect(() => {
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    setRender3D(shouldRender3D({ webgl: detectWebGL(), reducedMotion, width: window.innerWidth }));
+    setRender3D(shouldRender3D({ webgl: detectWebGL(), reducedMotion }));
   }, []);
 
   if (!render3D) {
@@ -59,7 +59,7 @@ export default function Hero3D() {
   }
   return (
     <div className="h-full w-full">
-      <Canvas camera={{ position: [0, 0, 4.4] }} gl={{ alpha: true }} style={{ background: "transparent" }}>
+      <Canvas dpr={[1, 2]} camera={{ position: [0, 0, 4.4] }} gl={{ alpha: true }} style={{ background: "transparent" }}>
         <ambientLight intensity={0.5} />
         <directionalLight position={[3, 3, 4]} intensity={1.4} color={ACID} />
         <Specimen />
