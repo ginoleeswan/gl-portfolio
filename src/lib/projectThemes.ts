@@ -38,7 +38,7 @@ export const PROJECT_THEMES: Record<Accent, ProjectTheme> = {
     bgMid: "#e29a3f",
     bgTo: "#a85a26",
     name: "#2a201b",
-    body: "#4b3a2f",
+    body: "#1a1009",
     chrome: "#6b4a31",
     accent: "#8c2f12",
     glyph: "#c9714a",
