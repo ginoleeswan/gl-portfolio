@@ -7,7 +7,8 @@ kana: カルマ
 order: 3
 year: "2025"
 role: Solo developer
-heroImage: /projects/karma-kart/hero.png
+heroImage: /projects/karma-kart/home.webp
+heroInset: "16%"
 gallery:
   - { src: "/projects/karma-kart/landing.webp", label: "Scan & shop your values" }
   - { src: "/projects/karma-kart/home.webp", label: "Home / Reckoner" }
@@ -17,40 +18,22 @@ gallery:
 techStack: ["Expo SDK 55", "expo-router 4", "Zustand 5", "Supabase", "Gemini 2.5", "RevenueCat", "PostHog"]
 liveUrl: "https://www.karmakart.app"
 repoUrl: "https://github.com/ginoleeswan/karma-kart"
+platforms: ["iOS", "Android", "Web"]
+problem: There's no time to research a brand's ethics in the moment before something goes in the cart — and the data isn't in front of you anyway.
+approach: A barcode scanner that resolves a product to its parent company and returns a personalized Karma Score across eight values, on one Expo SDK 55 codebase, enriched by Gemini in a Supabase Edge Function.
+decisions:
+  - icon: "lucide:calculator"
+    title: Personal score, testable math
+    body: An onboarding quiz sets per-value weights; the score normalizes them against company pillar scores. The algorithm lives in a pure lib/ module, so it runs under Jest in milliseconds.
+  - icon: "lucide:credit-card"
+    title: Payments split by platform
+    body: RevenueCat on native to satisfy Apple and Google IAP rules, Paddle on web as merchant of record. One subscription, two payment paths.
+  - icon: "lucide:server"
+    title: AI key server-side only
+    body: Gemini runs inside the Edge Function with the key stored as a Supabase secret, never in the app bundle.
+challenge: Barcode databases are full of gaps and conflicts, so product lookup is a ranked waterfall across five sources, with Gemini handling enrichment rather than being the source of truth.
+metrics:
+  - { icon: "lucide:smartphone", value: "3", label: "platforms shipped" }
+  - { icon: "lucide:scale", value: "8", label: "values scored" }
+  - { icon: "lucide:credit-card", value: "2", label: "payment rails" }
 ---
-
-## The problem
-Plenty of people want to shop their values, but at the shelf there's no data and no time —
-ethics research doesn't fit in the three seconds before something goes in the cart. Karma Kart
-puts a verdict in those three seconds.
-
-## What I built
-A barcode scanner that resolves a product to its parent company and returns a personalized
-**Karma Score** (0–100) across eight values, on a single **Expo SDK 55** codebase for iOS,
-Android, and Web. Scans hit a Supabase Edge Function that enriches data with **Gemini 2.5
-Flash**; product lookups fan out across Open Food Facts in a five-source waterfall so one
-source's missing field isn't a dead end.
-
-## Decisions that mattered
-**The score is personal, and the math is testable.** An onboarding "this or that" quiz sets
-per-value weights; the score normalizes those weights and sums them against company pillar
-scores. I kept that algorithm in a pure `lib/` module with no React Native imports, so it runs
-under Jest in milliseconds and the grading is provable, not vibes.
-
-**Payments split by platform on purpose.** Native iOS/Android monetize through **RevenueCat**
-to satisfy Apple/Google in-app-purchase rules, while the web tier runs on **Paddle**. One
-subscription concept, two payment rails — chosen to match each platform's constraints instead
-of fighting them.
-
-**The AI key is server-side only.** Gemini runs inside the Edge Function with the key stored as
-a Supabase secret, never in the app bundle.
-
-## What was hard
-Trusting third-party product data. Barcode databases are full of gaps and conflicts, so I built
-the lookup as a ranked waterfall across five sources and let Gemini handle *enrichment* rather
-than be the source of truth — the score still resolves when the data is thin.
-
-## Outcome
-A store-ready app on iOS, Android, and Web with real monetization (RevenueCat + Paddle),
-product analytics (PostHog), crash reporting (Sentry), and Maestro end-to-end flows — a
-complete, shippable product, not a prototype.

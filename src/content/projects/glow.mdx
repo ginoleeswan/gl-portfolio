@@ -7,7 +7,7 @@ kana: グロウ
 order: 2
 year: "2025"
 role: Solo developer
-heroImage: /projects/glow/hero.png
+heroImage: /projects/glow/home.webp
 gallery:
   - { src: "/projects/glow/landing.webp", label: "Made effortless" }
   - { src: "/projects/glow/home.webp", label: "The home glow" }
@@ -15,34 +15,19 @@ gallery:
 techStack: ["React 19", "Vite", "Mantine v8", "Supabase", "OpenAI", "Resend"]
 liveUrl: "https://www.glowapp.dev"
 repoUrl: "https://github.com/ginoleeswan/glow"
+platforms: ["Web"]
+problem: People care about their relationships, but a busy week gets in the way and the intention never becomes an actual message or gift.
+approach: A React 19 and Mantine web app where a "Glow" bundles an AI-written message, a gift suggestion, and a memory cue, built on Supabase with row-level security and real-time updates.
+decisions:
+  - icon: "lucide:shield-check"
+    title: RLS is where isolation lives
+    body: Every user-owned table is row-level-security scoped on auth.uid(), so Postgres enforces data isolation instead of trusting the React layer to get every query right.
+  - icon: "lucide:key-round"
+    title: Secrets stay on the server
+    body: OpenAI and Resend run inside Supabase Edge Functions, so no API key ever ships in the browser bundle.
+challenge: Switching accounts left the previous session's data in the query cache; I clear it on Supabase auth-state changes so a stale cache can't outlive the session.
+metrics:
+  - { icon: "lucide:globe", value: "Live", label: "glowapp.dev" }
+  - { icon: "lucide:shield-check", value: "RLS", label: "on every table" }
+  - { icon: "lucide:zap", value: "Real-time", label: "Supabase subscriptions" }
 ---
-
-## The problem
-People genuinely care about the relationships in their lives, but caring rarely survives a
-busy week — intentions scatter before they become a message, a gift, a moment. Glow's job is
-to close the gap between *meaning to* and actually doing it.
-
-## What I built
-A web app on **React 19** and **Mantine v8** where a "Glow" is a single unit of care: an
-AI-written message in your tone, a budget- and location-aware gift suggestion, and a memory
-cue, bundled together. It runs on Supabase with row-level security, real-time subscriptions,
-and OpenAI for message generation.
-
-## Decisions that mattered
-**Secrets never touch the client.** Message generation (OpenAI) and email delivery (Resend)
-run inside **Supabase Edge Functions**, so no API key ships in the browser bundle — the front
-end only ever talks to my own functions.
-
-**RLS as the security model, not app code.** Every table — people, events, glows — is
-user-scoped at the database with row-level security keyed on `auth.uid()`, so data isolation
-is enforced by Postgres rather than trusted to the React layer.
-
-## What was hard
-Auth-state changes were leaving stale data in the query cache — after switching accounts a
-user could briefly see the previous session's records. I tied cache invalidation to Supabase
-auth-state changes so the TanStack Query cache resets the instant the session does.
-
-## Outcome
-A live, real-time relationship app at **glowapp.dev** with full OAuth (Google, Facebook,
-GitHub) plus email auth, AI-personalized output, and transactional email — designed and built
-end to end, solo.

@@ -1,7 +1,7 @@
 ---
 title: One subscription, two payment rails
 slug: karma-kart-payments
-dek: Why Karma Kart bills through RevenueCat on native and Paddle on the web — and why forcing one tool to do both is a trap.
+dek: Karma Kart bills through RevenueCat on native and Paddle on the web. Here's why one billing tool couldn't cover both.
 date: 2026-06-20
 project: karma
 projectSlug: karma-kart
@@ -9,48 +9,41 @@ readingMinutes: 4
 tags: ["Payments", "React Native", "Architecture"]
 ---
 
-## The constraint you don't get to skip
-Karma Kart ships from one Expo codebase to iOS, Android, and the web. The moment you add a
-paid tier, that single codebase hits a wall that has nothing to do with your code: **Apple and
-Google require their own in-app-purchase systems for digital goods sold inside native apps.**
-You don't get to bring a Stripe checkout to the App Store. The web has the opposite rule — no
-native billing API, no 30% gatekeeper, so you're free to use a normal processor.
+## The constraint you can't skip
+Karma Kart runs from one Expo codebase on iOS, Android, and the web. Adding a paid tier ran
+straight into a rule that has nothing to do with my code: Apple and Google require their own
+in-app-purchase systems for digital goods sold inside native apps. You can't drop a Stripe
+checkout into an App Store build. The web has no such rule and no 30% cut, so an ordinary payment
+processor is fine there.
 
-So "add subscriptions" was never one problem. It was two, wearing the same UI.
+So "add subscriptions" was really two jobs that happened to share a UI.
 
-## Why I didn't force one tool to do both
-The tempting move is to pick a single billing SDK and stretch it across all three platforms. I
-didn't, for two reasons:
+## Why one tool didn't cover both
+I looked at using a single billing SDK across all three platforms and decided against it.
 
-- **RevenueCat is excellent at native and absent on web.** It wraps StoreKit and Google Play
-  Billing and handles receipt validation, entitlements, and restore-purchases — the genuinely
-  painful parts of native IAP. It is not a web checkout. Pretending it is means reimplementing
-  the thing it's actually good at.
-- **A web processor can't satisfy Apple inside the app.** Routing native purchases through
-  Paddle or Stripe is exactly what gets a build rejected.
+RevenueCat is good on native and doesn't do web at all. It wraps StoreKit and Google Play
+Billing and handles receipt validation, entitlements, and restore-purchases — the parts of native
+IAP I didn't want to write by hand. But it isn't a web checkout, so using it on the web would
+mean rebuilding the part it already does for me.
 
-Fighting the platforms here is a tax with no upside.
+Going the other way doesn't work: routing native purchases through a web processor like Paddle or
+Stripe is what gets an App Store build rejected.
 
-## What I actually built
-One **subscription concept** — Karma Kart+ — expressed through two rails:
+## What I built
+There's one paid tier, Karma Kart+, and two ways to pay for it.
 
-- **Native (iOS / Android):** RevenueCat over StoreKit and Play Billing. It owns entitlement
-  state on the device.
-- **Web:** Paddle, chosen specifically because it's a **merchant of record** — it handles
-  global sales tax and VAT so I don't have to register for tax in every jurisdiction a web
-  subscriber might come from.
+On iOS and Android it goes through RevenueCat over StoreKit and Play Billing, which holds the
+entitlement state on the device. On the web it goes through Paddle. I picked Paddle for the web
+because it acts as the merchant of record and deals with sales tax and VAT, so I don't have to
+register for tax in every country a web subscriber might be in.
 
-The rest of the app never asks *which processor paid for this.* It asks one question — *is this
-user premium?* — against a single entitlement check in `lib/payments`. The platform split lives
-behind that boundary; every feature-gating call above it stays platform-agnostic.
+Above that, the app doesn't care which processor was used. It checks one thing — is this user
+premium? — through a single entitlement check in `lib/payments`, and the platform difference
+stays behind that check.
 
-## The trade-off I took on purpose
-Two rails means two sources of truth for "is this person subscribed," reconciled to one
-entitlement. That's more moving parts than a single Stripe integration on a web-only product. I
-accepted it deliberately: it's the price of being installable on the App Store **and** sellable
-on the open web from the same codebase — which, for a values-driven shopping app that wants to
-be wherever people shop, is the entire point.
-
-The principle I'd carry forward: when a platform hands you a hard constraint, model it as a
-**boundary, not a bug.** The split isn't mess — it's the architecture being honest about the
-world it ships into.
+## The cost
+Two payment paths mean two records of "is this person subscribed," reconciled into one
+entitlement. That's more to maintain than a single Stripe integration would be on a web-only
+product. I took it on because I wanted the app installable on the App Store and sellable on the
+open web from the same codebase, and for a shopping app meant to be wherever people shop, the
+extra wiring was worth it.

@@ -1,7 +1,7 @@
 ---
-title: One codebase, three platforms — and the boundary I respected
+title: One codebase, three platforms, one boundary I respected
 slug: mythique-cross-platform
-dek: Mythique ships to iOS, Android, and the web from a single Expo codebase. What the managed workflow actually costs, and why I put Supabase in front of two messy comic APIs.
+dek: Mythique ships to iOS, Android, and the web from a single Expo codebase. What the managed workflow costs, and why I put Supabase in front of two messy comic APIs.
 date: 2026-06-04
 project: myth
 projectSlug: mythique
@@ -10,39 +10,34 @@ tags: ["Expo", "Cross-platform", "Architecture"]
 ---
 
 ## The bet
-Mythique is a superhero encyclopedia that had to feel native on a phone and still exist on the
-web — without me maintaining two apps. The bet was Expo's **managed workflow**: one set of
-file-based routes compiled to iOS, Android, and web. Solo, "one surface to design, test, and
-fix" isn't a convenience — it's the difference between shipping three platforms and shipping one.
+Mythique is a superhero encyclopedia that needed to feel right on a phone and also work on the
+web, without me running two apps. So I built it on Expo's managed workflow: one set of file-based
+routes compiled to iOS, Android, and web. Working on my own, keeping a single codebase instead of
+two is most of what made shipping to three platforms realistic.
 
-## What that bet costs
-Managed Expo isn't free. You live inside a **native-module boundary**: if a feature needs a
-native dependency Expo doesn't support, you either find a config-plugin path or eject and inherit
-the native build complexity you were avoiding. So the discipline is to design *within* what the
-managed workflow gives you, and to treat "drop to custom native" as a real decision with a real
-cost — not a reflex.
+## What it costs
+Managed Expo has a catch. You're inside a native-module boundary, so if a feature needs a native
+dependency Expo doesn't support, you either find a config-plugin route or eject and take on the
+native build setup you were trying to avoid. The trick is to build within what the managed
+workflow already gives you, and to treat dropping to custom native as a real decision rather than
+a first resort.
 
-For Mythique, everything it needed — gestures, Reanimated transitions, image handling — lived
-inside that boundary, so the trade paid off. On an app with heavy native requirements the same
-bet would be wrong, and that's the point: it's a bet, made on *this* app's actual needs.
+For Mythique, everything I needed (gestures, Reanimated transitions, image handling) was available
+inside that boundary, so it worked out. On an app with heavier native requirements I'd probably
+choose differently, which is the point — it depends on what the app actually needs.
 
-## The other boundary: two APIs that disagree
-Mythique's data comes from **SuperheroAPI** and **ComicVine** — two sources with different
-shapes, different gaps, and different rate limits. The naive approach is to call them straight
-from the client on every screen. That's slow, it leaks third-party keys into the app, and it
-makes the UI's correctness depend on two services being up and agreeing with each other.
+## Two APIs that don't agree
+The data comes from SuperheroAPI and ComicVine, and they have different shapes, different gaps,
+and different rate limits. Calling them straight from the client on every screen is slow, it
+exposes the third-party keys, and it ties the UI's correctness to two services being up at once.
 
-So I put **Supabase in front of them**. The third-party keys stay server-side. Reads hit my own
-backend, which serves a single normalized shape, so the UI never knows or cares which source a
-character came from. When a field is missing in one source it degrades gracefully — a character
-with no recorded weight simply doesn't show weight, instead of breaking the screen.
+So I put Supabase in front of them. The keys stay server-side, and the client reads from my
+backend, which returns one normalized shape. The UI never has to know which source a character
+came from, and when a field is missing in one source it just doesn't render rather than throwing.
 
-## The principle underneath both
-Both choices are the same instinct applied twice: **put a boundary between your app and the
-things you don't control.** The managed workflow is a boundary against platform-specific native
-complexity. The Supabase layer is a boundary against flaky, mismatched third-party data. Each
-trades some raw flexibility for a smaller, calmer surface to reason about — and for a solo build
-shipping to three platforms, a calmer surface is what makes it shippable at all.
-
-The repo has since picked up 58 stars from other developers, which I read as a small signal that
-the boundaries were drawn in roughly the right places.
+## What ties it together
+Both choices come down to the same habit: keep a layer between the app and the things I don't
+control — the platform's native internals in one case, messy third-party data in the other. Each
+one trades some flexibility for a smaller surface to keep in my head, which on a solo build across
+three platforms is what kept it manageable. The repo has picked up 58 stars since, for whatever
+that's worth.

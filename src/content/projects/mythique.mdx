@@ -7,7 +7,7 @@ kana: ミスティク
 order: 1
 year: "2025"
 role: Solo developer
-heroImage: /projects/mythique/hero.png
+heroImage: /projects/mythique/home.webp
 gallery:
   - { src: "/projects/mythique/home.webp", label: "Every universe" }
   - { src: "/projects/mythique/discover.webp", label: "Discover" }
@@ -16,33 +16,19 @@ gallery:
 techStack: ["Expo", "expo-router 4", "React Native", "Reanimated 4", "Supabase", "TanStack Query"]
 liveUrl: "https://mythique-wiki.vercel.app"
 repoUrl: "https://github.com/ginoleeswan/hero"
+platforms: ["iOS", "Android", "Web"]
+problem: Superhero lore is scattered across wikis, and none of it is nice to use on a phone.
+approach: A cross-platform encyclopedia on one Expo codebase, pulling SuperheroAPI and ComicVine through a Supabase layer, with Reanimated transitions and TanStack Query for fetching and caching.
+decisions:
+  - icon: "lucide:layers"
+    title: One codebase, three platforms
+    body: Expo's managed workflow ships the same file-based routes to iOS, Android, and web. The trade is living inside the native-module boundary; the win is a single codebase to maintain.
+  - icon: "lucide:database"
+    title: Supabase in front of the APIs
+    body: Two rate-limited comic APIs sit behind Supabase, so reads stay fast, the third-party keys stay server-side, and the UI only ever sees one normalized shape.
+challenge: Two APIs with different shapes, gaps, and rate limits had to look like one clean dataset — missing fields degrade gracefully instead of breaking the screen.
+metrics:
+  - { icon: "lucide:smartphone", value: "3", label: "platforms shipped" }
+  - { icon: "simple-icons:github", value: "58", label: "GitHub stars" }
+  - { icon: "lucide:search", value: "3,000+", label: "characters" }
 ---
-
-## The problem
-Superhero lore lives scattered across wikis, none of them pleasant on a phone. I wanted
-one place — fast, native-feeling, and identical on iOS, Android, and the web — to browse
-thousands of characters across publishers without it feeling like you're reading a database.
-
-## What I built
-A cross-platform encyclopedia on a single **Expo / expo-router 4** codebase, pulling from
-**SuperheroAPI** and **ComicVine** behind a Supabase layer. Characters render with Reanimated 4
-transitions and a squircle-based card system, with TanStack Query handling fetching and caching.
-
-## Decisions that mattered
-**One codebase, three platforms.** I committed to Expo's managed workflow so the same
-file-based routes ship to iOS, Android, and Web instead of maintaining a separate web build.
-The cost is living inside Expo's native-module boundary; the payoff is one surface to design,
-test, and fix — which, solo, is the difference between shipping and not.
-
-**Supabase in front of the APIs, not just for auth.** Rather than hit two rate-limited comic
-APIs on every view, I front them with Supabase so reads stay fast and the third-party keys
-never reach the client.
-
-## What was hard
-Two external APIs with different shapes, gaps, and rate limits had to look like one clean
-dataset. I normalized them behind the query layer so the UI never knows which source a
-character came from, and missing fields degrade gracefully instead of breaking the screen.
-
-## Outcome
-One Expo codebase shipping to iOS, Android, and Web, searching **3,000+ characters** — and the
-open-source repo has earned **58 stars** from other developers.

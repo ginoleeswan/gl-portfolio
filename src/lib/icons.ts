@@ -31,3 +31,12 @@ export function techIcon(name: string): string | null {
   for (const [key, icon] of TECH_RULES) if (n.includes(key)) return icon;
   return null;
 }
+
+export function platformIcon(platform: string): string {
+  const map: Record<string, string> = {
+    ios: "simple-icons:apple",
+    android: "simple-icons:android",
+    web: "lucide:globe",
+  };
+  return map[platform.toLowerCase()] ?? "lucide:circle";
+}
