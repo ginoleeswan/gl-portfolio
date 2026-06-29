@@ -142,8 +142,31 @@ const meta = buildMeta({ title, description, image });
         });
       }
 
+      /* nav scroll-spy — light the matching link as #work / #contact pass the upper third */
+      function bindNavSpy() {
+        const links = [...document.querySelectorAll<HTMLElement>("[data-spy]")];
+        const sections = ["work", "contact"].map((id) => document.getElementById(id)).filter(Boolean) as HTMLElement[];
+        if (!links.length || !sections.length) return;
+        const visible = new Set<string>();
+        const setActive = (id?: string) =>
+          links.forEach((l) => {
+            const on = !!id && l.dataset.spy === id;
+            l.classList.toggle("is-active", on);
+            if (on) l.setAttribute("aria-current", "true");
+            else if (l.getAttribute("aria-current") === "true") l.removeAttribute("aria-current");
+          });
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((e) => (e.isIntersecting ? visible.add(e.target.id) : visible.delete(e.target.id)));
+            setActive(["work", "contact"].find((id) => visible.has(id)));
+          },
+          { rootMargin: "-45% 0px -50% 0px" }
+        );
+        sections.forEach((s) => io.observe(s));
+      }
+
       // per-view features re-bind after every view transition; global hooks attach once
-      document.addEventListener("astro:page-load", () => { bindBinaryBlocks(); bindScramble(); });
+      document.addEventListener("astro:page-load", () => { bindBinaryBlocks(); bindScramble(); bindNavSpy(); });
       if (!(window as any).__glInit) {
         (window as any).__glInit = true;
         consoleSignature();

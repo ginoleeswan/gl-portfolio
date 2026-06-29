@@ -1,33 +1,54 @@
 ---
 import { Icon } from "astro-icon/components";
+// Logo is "home", so no redundant Index link. Anchor links get scroll-spy
+// active states (data-spy); page links match on pathname.
 const links = [
-  { label: "Index", href: "/", match: "/", mobileHidden: true },
-  { label: "Work", href: "/#work", match: null, mobileHidden: false },
-  { label: "Notes", href: "/writing", match: "/writing", mobileHidden: false },
-  { label: "About", href: "/about", match: "/about", mobileHidden: false },
-  { label: "Contact", href: "/#contact", match: null, mobileHidden: true },
+  { label: "Work", href: "/#work", spy: "work" },
+  { label: "Notes", href: "/writing", match: "/writing" },
+  { label: "About", href: "/about", match: "/about" },
 ];
 const pathname = Astro.url.pathname;
 ---
 <nav
-  class="sticky top-0 z-50 flex items-center justify-between border-b border-line bg-void/80 px-6 py-4 backdrop-blur sm:px-12"
+  aria-label="Primary"
+  class="sticky top-0 z-50 flex items-center justify-between border-b border-line bg-void/80 px-6 py-4 backdrop-blur supports-[backdrop-filter]:bg-void/65 sm:px-12"
 >
-  <a href="/" class="inline-flex items-center gap-2.5 font-sub text-sm font-black tracking-tight text-bone">
-    <Icon name="gino" class="h-6 w-6 text-acid" />
-    <span>GINO SWANEPOEL</span>
+  <a
+    href="/"
+    aria-label="Gino Swanepoel — home"
+    class="group inline-flex items-center gap-2.5 font-sub text-sm font-black tracking-tight text-bone"
+  >
+    <Icon
+      name="gino"
+      class="h-6 w-6 text-acid transition-transform duration-300 ease-out group-hover:-rotate-[10deg]"
+    />
+    <span class="hidden sm:inline">GINO SWANEPOEL</span>
   </a>
-  <ul class="flex gap-4 font-mono text-[11px] uppercase tracking-[0.16em] text-steel sm:gap-6">
-    {
-      links.map((l) => (
-        <li class:list={[l.mobileHidden && "hidden sm:list-item"]}>
-          <a
-            href={l.href}
-            class:list={["transition-colors hover:text-acid", l.match === pathname && "text-acid"]}
-          >
-            {l.label}
-          </a>
-        </li>
-      ))
-    }
-  </ul>
+
+  <div class="flex items-center gap-3 sm:gap-6">
+    <ul class="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.16em] text-steel sm:gap-6">
+      {
+        links.map((l) => (
+          <li>
+            <a
+              href={l.href}
+              data-spy={l.spy}
+              aria-current={l.match === pathname ? "page" : undefined}
+              class:list={["nav-link relative transition-colors hover:text-acid", l.match === pathname && "is-active text-acid"]}
+            >
+              {l.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <a
+      href="/#contact"
+      data-spy="contact"
+      class="nav-cta inline-flex items-center gap-2 border border-acid/55 px-3 py-1.5 font-mono text-[11px] font-bold uppercase tracking-[0.16em] text-acid transition-colors hover:bg-acid hover:text-void"
+    >
+      <span class="nav-dot inline-block h-1.5 w-1.5 rounded-full bg-acid"></span>
+      Contact
+    </a>
+  </div>
 </nav>
