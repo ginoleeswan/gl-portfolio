@@ -14,7 +14,7 @@ const projects = defineCollection({
     year: z.string(),
     role: z.string(),
     heroImage: z.string(),
-    gallery: z.array(z.string()).default([]),
+    gallery: z.array(z.object({ src: z.string(), label: z.string() })).default([]),
     techStack: z.array(z.string()),
     liveUrl: z.url().optional(),
     repoUrl: z.url(),

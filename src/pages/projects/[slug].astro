@@ -13,7 +13,7 @@ export async function getStaticPaths() {
 }
 
 const { project } = Astro.props as { project: CollectionEntry<"projects"> };
-const { title, tagline, techStack, liveUrl, repoUrl, slug, role, year, accent, kana, order } = project.data;
+const { title, tagline, techStack, liveUrl, repoUrl, slug, role, year, accent, kana, order, gallery } = project.data;
 const { Content } = await render(project);
 
 const t = PROJECT_THEMES[accent];
@@ -97,6 +97,38 @@ const nextGlyph = PROJECT_THEMES[next.accent].glyph;
       <div class="mb-14">
         <TechRow items={techStack} />
       </div>
+
+      {
+        gallery.length > 0 && (
+          <section class="mb-16">
+            <div class="mb-5 flex items-center gap-4 border-b border-line pb-3 font-mono text-[11px] uppercase tracking-[0.16em] text-steel">
+              <span class="text-acid">// Stills</span>
+              <span>
+                {String(gallery.length).padStart(2, "0")} frames &mdash; scroll &#8594;
+              </span>
+            </div>
+            <div class="-mx-5 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-4 sm:-mx-8 sm:px-8 lg:-mx-12 lg:px-12 [scrollbar-color:var(--color-line)_transparent] [scrollbar-width:thin]">
+              {gallery.map((g, i) => (
+                <figure class="shrink-0 snap-start">
+                  <div class="halftone relative h-[400px] overflow-hidden border border-line bg-void">
+                    <img
+                      src={g.src}
+                      alt={`${title} — ${g.label}`}
+                      loading="lazy"
+                      decoding="async"
+                      class="relative z-[1] block h-full w-auto max-w-none object-contain"
+                    />
+                  </div>
+                  <figcaption class="mt-2 font-mono text-[10px] uppercase tracking-[0.12em] text-steel">
+                    <span class="text-acid">{String(i + 1).padStart(2, "0")}</span> &mdash; {g.label}
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
+          </section>
+        )
+      }
+
       <article class="dossier"><Content /></article>
 
       <!-- mobile prev / next -->
