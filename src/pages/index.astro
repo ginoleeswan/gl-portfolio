@@ -31,25 +31,19 @@ const projects = (await getCollection("projects")).sort((a, b) => a.data.order -
         <!-- machine illustration (desktop: big, right) -->
         <div class="absolute right-0 top-1/2 z-0 hidden w-[50%] max-w-[600px] -translate-y-1/2 md:block lg:-right-4">
           <div class="relative" style="aspect-ratio: 1856 / 1788">
-            <!-- backing glow to seat the illustration into the page -->
+            <!-- soft periwinkle bloom behind the illustration, fading into the void -->
             <div
               class="absolute inset-0 z-0"
-              style="background: radial-gradient(58% 52% at 54% 42%, rgba(156, 162, 210, 0.12), transparent 70%)"
+              style="background: radial-gradient(50% 46% at 54% 42%, rgba(156, 162, 210, 0.1), transparent 72%)"
             >
             </div>
+            <!-- illustration sits on transparency; its native near-black ground melts into the page -->
             <img
               src="/hero-machine.webp"
               alt="Operator workstation — vintage terminal"
               fetchpriority="high"
               class="relative z-[1] h-full w-full object-contain"
-              style="filter: brightness(0.85) contrast(0.95) saturate(0.85); opacity: 0.94"
             />
-            <!-- periwinkle wash to retint it into the palette -->
-            <div
-              class="pointer-events-none absolute inset-0 z-[2] mix-blend-color"
-              style="background: var(--color-secondary); opacity: 0.5"
-            >
-            </div>
             <!-- CRT screen renders the live 3D specimen -->
             <div class="absolute z-[3] overflow-hidden" style="left: 29%; top: 11.5%; width: 40%; height: 30%">
               <Hero3D client:visible />
