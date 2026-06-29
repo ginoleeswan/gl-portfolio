@@ -36,5 +36,119 @@ const meta = buildMeta({ title, description, image });
     <i class="crosshair crosshair-br" aria-hidden="true"></i>
     <div class="relative z-[1]"><slot /></div>
     <VercelAnalytics client:idle />
+    <script>
+      const RM = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      /* 1 — hover a card: its binary block scrambles, then resolves to the initials it encodes */
+      function bindBinaryBlocks() {
+        document.querySelectorAll<HTMLElement>("[data-binary]").forEach((block) => {
+          if (block.dataset.bound) return;
+          block.dataset.bound = "1";
+          const card = block.closest("a") || block;
+          const spans = [...block.querySelectorAll<HTMLElement>("span")];
+          const original = spans.map((s) => s.textContent ?? "");
+          const code = (block.dataset.code ?? "").padEnd(spans.length, " ");
+          const rnd = () => Array.from({ length: 8 }, () => (Math.random() < 0.5 ? "0" : "1")).join("");
+          let timers: number[] = [];
+          const clear = () => { timers.forEach(clearTimeout); timers = []; };
+          const settle = () => spans.forEach((s, i) => { s.textContent = code[i] || " "; s.style.textAlign = "center"; });
+          card.addEventListener("mouseenter", () => {
+            clear();
+            if (RM) return settle();
+            let t = 0;
+            const tick = () => {
+              spans.forEach((s) => { s.textContent = rnd(); s.style.textAlign = "left"; });
+              t += 45;
+              if (t < 450) timers.push(window.setTimeout(tick, 45));
+              else settle();
+            };
+            tick();
+          });
+          card.addEventListener("mouseleave", () => {
+            clear();
+            spans.forEach((s, i) => { s.textContent = original[i]; s.style.textAlign = "left"; });
+          });
+        });
+      }
+
+      /* 2 — big wordmarks decrypt from random glyphs when they scroll into view */
+      function bindScramble() {
+        const glyphs = "ABCDEFGHIJKLMNOPQRSTUVWXYZ#%*/<>?01";
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            const el = entry.target as HTMLElement;
+            io.unobserve(el);
+            if (el.dataset.done) return;
+            el.dataset.done = "1";
+            const final = el.textContent ?? "";
+            if (RM) return;
+            let frame = 0;
+            const run = () => {
+              el.textContent = final
+                .split("")
+                .map((ch, i) => (ch === " " ? " " : i < frame / 2 ? final[i] : glyphs[(Math.random() * glyphs.length) | 0]))
+                .join("");
+              frame += 1;
+              if (frame / 2 < final.length) window.setTimeout(() => requestAnimationFrame(run), 16);
+              else el.textContent = final;
+            };
+            run();
+          });
+        }, { threshold: 0.4 });
+        document.querySelectorAll<HTMLElement>("[data-scramble]:not([data-done])").forEach((el) => io.observe(el));
+      }
+
+      /* 3 — a note for anyone who opens devtools */
+      function consoleSignature() {
+        const tag = "background:#4de852;color:#0a0b0a;font-weight:900;padding:2px 7px;border-radius:2px";
+        console.log("%c gl %c  you found the source.", tag, "color:#e9e7dd;font-weight:bold;font-size:13px");
+        console.log("%c01000111 01101001 01101110 01101111%c  → \"Gino\"", "color:#4de852;font-family:monospace", "color:#7f857a");
+        console.log("%cEvery project card hides its own initials in that binary block — hover one.\nThen try the Konami code. ↑↑↓↓←→←→ b a", "color:#9ca2d2;line-height:1.6");
+        console.log("%c→ github.com/ginoleeswan", "color:#4de852");
+      }
+
+      /* 5 — Konami code: acid flash + a received-transmission card */
+      function transmission() {
+        if (document.getElementById("konami-overlay")) return;
+        const flash = document.createElement("div");
+        Object.assign(flash.style, { position: "fixed", inset: "0", zIndex: "9998", background: "var(--color-acid)", mixBlendMode: "difference", pointerEvents: "none" });
+        document.body.appendChild(flash);
+        flash.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 520, easing: "ease-out" }).onfinish = () => flash.remove();
+
+        const o = document.createElement("div");
+        o.id = "konami-overlay";
+        Object.assign(o.style, { position: "fixed", inset: "0", zIndex: "9999", display: "grid", placeItems: "center", background: "rgba(10,11,10,0.88)", cursor: "pointer", backdropFilter: "blur(2px)" });
+        o.innerHTML = `<div style="text-align:center;font-family:var(--font-mono);color:#e9e7dd;padding:2rem;max-width:40ch">
+          <div style="font-size:11px;letter-spacing:.2em;color:#4de852;text-transform:uppercase">// Transmission received</div>
+          <div style="font-family:var(--font-display);font-size:clamp(56px,13vw,128px);text-transform:uppercase;line-height:.82;margin:.5rem 0 .7rem">Signal<br>locked.</div>
+          <div style="font-size:12px;color:#7f857a;line-height:1.6">You decoded the sequence — same energy that hid the initials in the binary. Now go open the apps.</div>
+          <div style="font-size:11px;color:#9ca2d2;margin-top:1.3rem;letter-spacing:.16em">[ click anywhere to close ]</div>
+        </div>`;
+        document.body.appendChild(o);
+        o.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 220 });
+        const close = () => { o.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 220 }).onfinish = () => o.remove(); };
+        o.addEventListener("click", close);
+        window.setTimeout(close, 4200);
+      }
+
+      function bindKonami() {
+        const seq = ["arrowup", "arrowup", "arrowdown", "arrowdown", "arrowleft", "arrowright", "arrowleft", "arrowright", "b", "a"];
+        let i = 0;
+        window.addEventListener("keydown", (e) => {
+          const k = e.key.toLowerCase();
+          i = k === seq[i] ? i + 1 : k === seq[0] ? 1 : 0;
+          if (i === seq.length) { i = 0; transmission(); }
+        });
+      }
+
+      // per-view features re-bind after every view transition; global hooks attach once
+      document.addEventListener("astro:page-load", () => { bindBinaryBlocks(); bindScramble(); });
+      if (!(window as any).__glInit) {
+        (window as any).__glInit = true;
+        consoleSignature();
+        bindKonami();
+      }
+    </script>
   </body>
 </html>
