@@ -68,8 +68,8 @@ const projects = (await getCollection("projects")).sort((a, b) => a.data.order -
           </h1>
           <div class="acid-stripe my-6 h-2.5 w-full max-w-sm md:my-7"></div>
           <p class="max-w-[42ch] font-sub text-[15px] font-medium leading-[1.6] text-bone/85 [text-shadow:0_1px_12px_rgba(10,11,10,0.9)]">
-            Three real apps, designed and engineered end to end &mdash; <span class="text-bone">iOS, Android &amp; web</span>.
-            From React Three Fiber interfaces to Supabase backends. No mockups. Live software.
+            Three apps I designed and built myself, front end and backend, for
+            <span class="text-bone">iOS, Android &amp; web</span>. All three are live, and you can open them right now.
           </p>
 
           <!-- mobile machine: inline under the copy, with the live 3D specimen in its CRT -->
@@ -110,12 +110,12 @@ const projects = (await getCollection("projects")).sort((a, b) => a.data.order -
 
     <!-- WORK -->
     <section id="work" class="scroll-mt-20 pt-24">
-      <div class="flex flex-wrap items-center justify-between gap-4 border-b border-line pb-3">
-        <span class="font-mono text-[11px] uppercase tracking-[0.16em] text-acid"
+      <div class="grid grid-cols-1 items-center gap-2 border-b border-line pb-3 md:grid-cols-3">
+        <span class="font-mono text-[11px] uppercase tracking-[0.16em] text-acid md:justify-self-start"
           >// Selected work</span
         >
-        <h2 class="font-display text-[30px] uppercase tracking-[0.02em]">The Work</h2>
-        <span class="font-mono text-[11px] uppercase tracking-[0.12em] text-steel"
+        <h2 class="font-display text-[30px] uppercase tracking-[0.02em] md:justify-self-center md:text-center">The Work</h2>
+        <span class="font-mono text-[11px] uppercase tracking-[0.12em] text-steel md:justify-self-end md:text-right"
           >Three flagships &mdash; each <span class="text-bone">live</span> &amp; <span class="text-bone">open source</span></span
         >
       </div>
@@ -150,7 +150,7 @@ const projects = (await getCollection("projects")).sort((a, b) => a.data.order -
           <p class="mb-5 font-sub text-[15px] font-medium text-bone/85">Have a product in mind, or a role to fill? Open a channel.</p>
           <a
             href={`mailto:${EMAIL}`}
-            class="inline-flex items-center gap-3 bg-flare px-6 py-3 font-sub text-[14px] font-black uppercase tracking-[0.04em] text-void transition-transform hover:-translate-y-0.5"
+            class="inline-flex items-center gap-3 bg-acid px-6 py-3 font-sub text-[14px] font-black uppercase tracking-[0.04em] text-void transition-transform hover:-translate-y-0.5"
           >
             {EMAIL} &#8599;
           </a>
