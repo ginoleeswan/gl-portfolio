@@ -19,6 +19,16 @@ const { Content } = await render(project);
 const t = PROJECT_THEMES[accent];
 const no = String(order).padStart(2, "0");
 const logoName = accent === "myth" ? "mythique" : accent === "glow" ? "glow" : "karma";
+
+// prev / next specimen, cycling with wrap-around
+const all = (await getCollection("projects")).sort((a, b) => a.data.order - b.data.order);
+const idx = all.findIndex((p) => p.data.slug === slug);
+const prev = all[(idx - 1 + all.length) % all.length].data;
+const next = all[(idx + 1) % all.length].data;
+const prevNo = String(prev.order).padStart(2, "0");
+const nextNo = String(next.order).padStart(2, "0");
+const prevGlyph = PROJECT_THEMES[prev.accent].glyph;
+const nextGlyph = PROJECT_THEMES[next.accent].glyph;
 ---
 
 <BaseLayout title={title} description={tagline}>
@@ -27,7 +37,7 @@ const logoName = accent === "myth" ? "mythique" : accent === "glow" ? "glow" : "
     <!-- DUOTONE DOSSIER HEADER (real app palette) -->
     <header
       class="halftone relative overflow-hidden px-12 pb-12 pt-16"
-      style={`view-transition-name: card-${slug}; background:
+      style={`view-transition-name: dossier-poster; background:
         radial-gradient(125% 125% at 16% 0%, ${t.bgFrom}, ${t.bgMid} 52%, ${t.bgTo})`}
     >
       <Icon
@@ -50,7 +60,7 @@ const logoName = accent === "myth" ? "mythique" : accent === "glow" ? "glow" : "
           <Icon name={logoName} class="h-14 w-14" style={`color:${t.name}`} />
           <span class="font-mono text-[12px] uppercase tracking-[0.18em]" style={`color:${t.body}`}>Specimen {no}</span>
         </div>
-        <h1 class="mt-4 font-display text-[clamp(56px,11vw,150px)] uppercase leading-[0.82] tracking-[0.01em]" style={`color:${t.name}`}>
+        <h1 class="mt-4 font-display text-[clamp(56px,11vw,150px)] uppercase leading-[0.82] tracking-[0.01em]" style={`view-transition-name: title-${slug}; color:${t.name}`}>
           {title}
         </h1>
         <p class="mt-4 max-w-[44ch] font-mono text-[14px] leading-relaxed" style={`color:${t.body}`}>{tagline}</p>
@@ -88,10 +98,87 @@ const logoName = accent === "myth" ? "mythique" : accent === "glow" ? "glow" : "
         <TechRow items={techStack} />
       </div>
       <article class="dossier"><Content /></article>
+
+      <!-- mobile prev / next -->
+      <nav class="mt-16 flex items-stretch justify-between gap-3 border-t border-line pt-6 font-mono text-[11px] uppercase tracking-[0.12em] md:hidden">
+        <a href={`/projects/${prev.slug}`} data-cycle="prev" class="flex items-center gap-2 text-steel hover:text-acid">
+          &#8592; <span>{prev.title}</span>
+        </a>
+        <a href={`/projects/${next.slug}`} data-cycle="next" class="flex items-center gap-2 text-steel hover:text-acid">
+          <span>{next.title}</span> &#8594;
+        </a>
+      </nav>
     </div>
+
+    <!-- PREV (left edge) -->
+    <a
+      href={`/projects/${prev.slug}`}
+      data-cycle="prev"
+      aria-label={`Previous specimen: ${prev.title}`}
+      class="group fixed left-0 top-1/2 z-40 hidden h-44 -translate-y-1/2 items-center md:flex"
+    >
+      <span class="flex h-full w-11 items-center justify-center border-r border-bone/15 bg-void/35 text-bone/70 backdrop-blur-sm transition-colors duration-200 group-hover:bg-void/65 group-hover:text-acid">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="h-7 w-7"><path d="m15 18-6-6 6-6"></path></svg>
+      </span>
+      <span
+        class="pointer-events-none ml-1 flex max-w-[40vw] -translate-x-3 flex-col gap-0.5 border border-line bg-void/85 px-3 py-2 opacity-0 backdrop-blur-sm transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100"
+      >
+        <span class="font-mono text-[10px] uppercase tracking-[0.16em] text-steel">&#8592; Prev / N&deg;{prevNo}</span>
+        <span class="truncate font-display text-[30px] uppercase leading-none" style={`color:${prevGlyph}`}>{prev.title}</span>
+      </span>
+    </a>
+
+    <!-- NEXT (right edge) -->
+    <a
+      href={`/projects/${next.slug}`}
+      data-cycle="next"
+      aria-label={`Next specimen: ${next.title}`}
+      class="group fixed right-0 top-1/2 z-40 hidden h-44 -translate-y-1/2 flex-row-reverse items-center md:flex"
+    >
+      <span class="flex h-full w-11 items-center justify-center border-l border-bone/15 bg-void/35 text-bone/70 backdrop-blur-sm transition-colors duration-200 group-hover:bg-void/65 group-hover:text-acid">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="h-7 w-7"><path d="m9 18 6-6-6-6"></path></svg>
+      </span>
+      <span
+        class="pointer-events-none mr-1 flex max-w-[40vw] translate-x-3 flex-col items-end gap-0.5 border border-line bg-void/85 px-3 py-2 opacity-0 backdrop-blur-sm transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100"
+      >
+        <span class="font-mono text-[10px] uppercase tracking-[0.16em] text-steel">Next / N&deg;{nextNo} &#8594;</span>
+        <span class="truncate font-display text-[30px] uppercase leading-none" style={`color:${nextGlyph}`}>{next.title}</span>
+      </span>
+    </a>
   </main>
   <Footer />
 </BaseLayout>
+
+<script>
+  // ←/→ cycle between specimens, reusing the page's prev/next links + view transition
+  import { navigate } from "astro:transitions/client";
+  if (!(window as any).__cycleKeysBound) {
+    (window as any).__cycleKeysBound = true;
+    document.addEventListener("keydown", (e) => {
+      if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+      const tag = (e.target as HTMLElement | null)?.tagName;
+      if (tag === "INPUT" || tag === "TEXTAREA" || (e.target as HTMLElement)?.isContentEditable) return;
+      const sel = e.key === "ArrowLeft" ? '[data-cycle="prev"]' : '[data-cycle="next"]';
+      const link = document.querySelector(sel) as HTMLAnchorElement | null;
+      if (link) {
+        e.preventDefault();
+        navigate(link.href);
+      }
+    });
+  }
+</script>
+
+<style is:global>
+  /* slow, weighted morph of the colored poster as you cycle specimens */
+  ::view-transition-group(dossier-poster) {
+    animation-duration: 0.55s;
+    animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+  }
+  ::view-transition-old(dossier-poster),
+  ::view-transition-new(dossier-poster) {
+    animation-duration: 0.55s;
+  }
+</style>
 
 <style is:global>
   .dossier {

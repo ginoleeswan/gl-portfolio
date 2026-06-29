@@ -12,7 +12,7 @@ const primary = techStack[0];
 <a
   href={`/projects/${slug}`}
   class="halftone reveal group relative flex min-h-[440px] flex-col overflow-hidden border border-white/15 p-6 no-underline transition-transform duration-200 hover:-translate-y-1"
-  style={`view-transition-name: card-${slug}; background:
+  style={`background:
     radial-gradient(125% 125% at 18% 0%, ${t.bgFrom}, ${t.bgMid} 52%, ${t.bgTo})`}
 >
   <!-- top chrome -->
@@ -51,7 +51,7 @@ const primary = techStack[0];
         N&deg;{no} &mdash; {primary}
       </span>
     </div>
-    <h3 class="font-display text-[52px] uppercase leading-[0.82] tracking-[0.02em]" style={`color:${t.name}`}>
+    <h3 class="font-display text-[52px] uppercase leading-[0.82] tracking-[0.02em]" style={`view-transition-name: title-${slug}; color:${t.name}`}>
       {title}
     </h3>
     <p class="mt-3 max-w-[26ch] font-mono text-[11px] leading-relaxed" style={`color:${t.body}`}>{tagline}</p>
