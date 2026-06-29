@@ -36,7 +36,7 @@ const nextGlyph = PROJECT_THEMES[next.accent].glyph;
   <main>
     <!-- DUOTONE DOSSIER HEADER (real app palette) -->
     <header
-      class="halftone relative overflow-hidden px-12 pb-12 pt-16"
+      class="halftone relative overflow-hidden px-5 pb-12 pt-16 sm:px-8 lg:px-12"
       style={`view-transition-name: dossier-poster; background:
         radial-gradient(125% 125% at 16% 0%, ${t.bgFrom}, ${t.bgMid} 52%, ${t.bgTo})`}
     >
@@ -51,7 +51,7 @@ const nextGlyph = PROJECT_THEMES[next.accent].glyph;
           <span>Dossier N&deg;{no} / {year}</span>
         </div>
         <div
-          class="pointer-events-none absolute right-0 top-6 font-sub text-[60px] font-black leading-none opacity-90"
+          class="pointer-events-none absolute right-0 top-6 hidden font-sub text-[60px] font-black leading-none opacity-90 sm:block"
           style={`color:${t.glyph}; writing-mode: vertical-rl`}
         >
           {kana}
@@ -90,7 +90,7 @@ const nextGlyph = PROJECT_THEMES[next.accent].glyph;
     </header>
 
     <!-- DOSSIER BODY -->
-    <div class="mx-auto max-w-3xl px-12 py-16">
+    <div class="mx-auto max-w-3xl px-5 py-16 sm:px-8 lg:px-12">
       <div class="mb-8 flex items-center gap-4 border-b border-line pb-3 font-mono text-[11px] uppercase tracking-[0.16em] text-steel">
         <span class="text-acid">// Dossier</span><span>Stack &mdash; hover for name</span>
       </div>
