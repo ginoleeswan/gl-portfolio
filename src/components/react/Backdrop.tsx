@@ -38,9 +38,14 @@ export default function Backdrop({ mode = "dither" }: { mode?: Mode }) {
 
   return (
     <div
-      className="pointer-events-none fixed inset-0 z-0"
+      className="pointer-events-none fixed left-0 top-0 z-0 w-full overflow-hidden"
       aria-hidden="true"
       style={{
+        // Pin to the *large* viewport height (URL-bar-hidden), not the dynamic
+        // one. On mobile the browser chrome shows/hides on scroll, which would
+        // otherwise resize this fixed layer every frame and reallocate the
+        // WebGL buffer — the flicker. A constant height keeps the canvas stable.
+        height: "100lvh",
         mixBlendMode: "screen",
         opacity,
         maskImage: VIGNETTE,
