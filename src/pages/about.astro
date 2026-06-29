@@ -5,6 +5,13 @@ import Nav from "../components/astro/Nav.astro";
 import Footer from "../components/astro/Footer.astro";
 import { SOCIALS, EMAIL } from "../lib/social";
 import { socialIcon } from "../lib/icons";
+
+// Derivco tenure, computed at build so it never goes stale (started Jan 2022).
+const derivcoStart = new Date(2022, 0, 1);
+const tenureMonths =
+  (new Date().getFullYear() - derivcoStart.getFullYear()) * 12 +
+  (new Date().getMonth() - derivcoStart.getMonth());
+const derivcoYears = (Math.round((tenureMonths / 12) * 2) / 2).toFixed(1);
 ---
 
 <BaseLayout title="About" description="About Gino Swanepoel — designer-developer.">
@@ -25,15 +32,19 @@ import { socialIcon } from "../lib/icons";
           <h1 class="font-display text-[clamp(56px,9vw,120px)] uppercase leading-[0.85]">
             About<br /><span class="text-acid">the operator.</span>
           </h1>
-          <div class="mt-8 max-w-[58ch] space-y-4 font-mono text-[14px] leading-[1.8] text-bone/85">
+          <div class="mt-8 max-w-[60ch] space-y-4 font-sub text-[16px] font-medium leading-[1.7] text-bone/85">
             <p>
               I&rsquo;m <span class="text-bone">Gino Swanepoel</span> &mdash; a designer-developer who builds
               cross-platform apps end to end. Interfaces, motion, backends, ship.
             </p>
             <p>
+              By day, a <span class="text-bone">Software Developer II at Derivco</span> in Cape Town &mdash; {derivcoYears}+ years
+              shipping production software on a large engineering team. The products in this portfolio are what I design and
+              build on my own time, front to back.
+            </p>
+            <p>
               I work in the seam between design and engineering: React Three Fiber and brutalist UI on the front,
-              Supabase, TypeScript, and AI on the back. The three products in the index are real, shipped software &mdash;
-              not concepts.
+              Supabase, TypeScript, and AI on the back. Real, shipped software &mdash; not concepts.
             </p>
           </div>
           <a
@@ -99,6 +110,37 @@ import { socialIcon } from "../lib/icons";
           <div class="mt-2 font-mono text-[10px] uppercase tracking-[0.1em] text-steel">ID 1696&middot;4567 / OPERATOR</div>
         </div>
       </div>
+    </section>
+
+    <!-- SERVICE RECORD -->
+    <section class="pt-16">
+      <div
+        class="flex flex-wrap items-center gap-x-6 gap-y-2 border-b border-line pb-3 font-mono text-[11px] uppercase tracking-[0.16em] text-steel"
+      >
+        <span class="text-acid">// Service record</span>
+        <span class="flex-1"></span>
+        <span class="inline-flex items-center gap-2 text-secondary">
+          <span class="inline-block h-[7px] w-[7px] rounded-full bg-acid"></span>Active duty
+        </span>
+      </div>
+
+      <article class="mt-8 grid gap-x-8 gap-y-4 md:grid-cols-[1fr_auto] md:items-start">
+        <div>
+          <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+            <h2 class="font-display text-[clamp(34px,5vw,56px)] uppercase leading-[0.9]">Derivco</h2>
+            <span class="font-mono text-[11px] uppercase tracking-[0.14em] text-steel">Cape Town, ZA</span>
+          </div>
+          <div class="mt-2 font-sub text-[15px] font-bold uppercase tracking-[0.04em] text-acid">Software Developer II</div>
+          <!-- TODO(gino): replace with the specific work you shipped at Derivco (systems, stack, impact) -->
+          <p class="mt-4 max-w-[60ch] font-sub text-[15px] font-medium leading-[1.7] text-bone/85">
+            Building and shipping production software on a cross-functional engineering team.
+          </p>
+        </div>
+        <div class="font-mono text-[11px] uppercase tracking-[0.12em] text-steel md:text-right">
+          <div class="text-bone">2022 &mdash; Present</div>
+          <div class="mt-1">{derivcoYears} yrs in seat</div>
+        </div>
+      </article>
     </section>
   </main>
   <Footer />

@@ -19,11 +19,30 @@ repoUrl: "https://github.com/ginoleeswan/hero"
 ---
 
 ## The problem
-Fans wanted a single, beautiful place to explore superhero lore across universes.
+Superhero lore lives scattered across wikis, none of them pleasant on a phone. I wanted
+one place — fast, native-feeling, and identical on iOS, Android, and the web — to browse
+thousands of characters across publishers without it feeling like you're reading a database.
 
 ## What I built
-A cross-platform encyclopedia with file-based navigation, fluid Reanimated transitions,
-and a Supabase backend, sourcing data from SuperheroAPI and ComicVine.
+A cross-platform encyclopedia on a single **Expo / expo-router 4** codebase, pulling from
+**SuperheroAPI** and **ComicVine** behind a Supabase layer. Characters render with Reanimated 4
+transitions and a squircle-based card system, with TanStack Query handling fetching and caching.
+
+## Decisions that mattered
+**One codebase, three platforms.** I committed to Expo's managed workflow so the same
+file-based routes ship to iOS, Android, and Web instead of maintaining a separate web build.
+The cost is living inside Expo's native-module boundary; the payoff is one surface to design,
+test, and fix — which, solo, is the difference between shipping and not.
+
+**Supabase in front of the APIs, not just for auth.** Rather than hit two rate-limited comic
+APIs on every view, I front them with Supabase so reads stay fast and the third-party keys
+never reach the client.
+
+## What was hard
+Two external APIs with different shapes, gaps, and rate limits had to look like one clean
+dataset. I normalized them behind the query layer so the UI never knows which source a
+character came from, and missing fields degrade gracefully instead of breaking the screen.
 
 ## Outcome
-One codebase shipping to iOS, Android, and Web from Expo.
+One Expo codebase shipping to iOS, Android, and Web, searching **3,000+ characters** — and the
+open-source repo has earned **58 stars** from other developers.

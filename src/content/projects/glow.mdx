@@ -18,11 +18,31 @@ repoUrl: "https://github.com/ginoleeswan/glow"
 ---
 
 ## The problem
-People care, but scattered intentions rarely become meaningful action.
+People genuinely care about the relationships in their lives, but caring rarely survives a
+busy week — intentions scatter before they become a message, a gift, a moment. Glow's job is
+to close the gap between *meaning to* and actually doing it.
 
 ## What I built
-A web app that bundles AI-personalized messages, smart gift suggestions, and memory cues
-into a single unit of care — built on React 19, Mantine v8, and Supabase with RLS.
+A web app on **React 19** and **Mantine v8** where a "Glow" is a single unit of care: an
+AI-written message in your tone, a budget- and location-aware gift suggestion, and a memory
+cue, bundled together. It runs on Supabase with row-level security, real-time subscriptions,
+and OpenAI for message generation.
+
+## Decisions that mattered
+**Secrets never touch the client.** Message generation (OpenAI) and email delivery (Resend)
+run inside **Supabase Edge Functions**, so no API key ships in the browser bundle — the front
+end only ever talks to my own functions.
+
+**RLS as the security model, not app code.** Every table — people, events, glows — is
+user-scoped at the database with row-level security keyed on `auth.uid()`, so data isolation
+is enforced by Postgres rather than trusted to the React layer.
+
+## What was hard
+Auth-state changes were leaving stale data in the query cache — after switching accounts a
+user could briefly see the previous session's records. I tied cache invalidation to Supabase
+auth-state changes so the TanStack Query cache resets the instant the session does.
 
 ## Outcome
-A polished, real-time relationship wellness experience with AI-generated thoughtfulness.
+A live, real-time relationship app at **glowapp.dev** with full OAuth (Google, Facebook,
+GitHub) plus email auth, AI-personalized output, and transactional email — designed and built
+end to end, solo.

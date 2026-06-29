@@ -92,7 +92,7 @@ const nextGlyph = PROJECT_THEMES[next.accent].glyph;
     <!-- DOSSIER BODY -->
     <div class="mx-auto max-w-3xl px-5 py-16 sm:px-8 lg:px-12">
       <div class="mb-8 flex items-center gap-4 border-b border-line pb-3 font-mono text-[11px] uppercase tracking-[0.16em] text-steel">
-        <span class="text-acid">// Dossier</span><span>Stack &mdash; hover for name</span>
+        <span class="text-acid">// Stack</span><span>{techStack.length} tools, end to end</span>
       </div>
       <div class="mb-14">
         <TechRow items={techStack} />
@@ -214,10 +214,11 @@ const nextGlyph = PROJECT_THEMES[next.accent].glyph;
 
 <style is:global>
   .dossier {
-    font-family: var(--font-mono);
-    color: color-mix(in srgb, var(--color-bone) 85%, transparent);
-    font-size: 14px;
-    line-height: 1.8;
+    font-family: var(--font-sub);
+    font-weight: 500;
+    color: color-mix(in srgb, var(--color-bone) 88%, transparent);
+    font-size: 16px;
+    line-height: 1.7;
   }
   .dossier h2 {
     font-family: var(--font-sub);

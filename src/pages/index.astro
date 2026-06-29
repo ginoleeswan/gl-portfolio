@@ -64,10 +64,10 @@ const projects = (await getCollection("projects")).sort((a, b) => a.data.order -
           <h1
             class="mt-3 font-display text-[clamp(64px,16vw,124px)] uppercase leading-[0.85] tracking-[0.01em] [text-shadow:0_2px_24px_rgba(10,11,10,0.92)]"
           >
-            Built to<br />be <span class="text-acid">shipped.</span>
+            I design it<br />and I <span class="text-acid">ship it.</span>
           </h1>
           <div class="acid-stripe my-6 h-2.5 w-full max-w-sm md:my-7"></div>
-          <p class="max-w-[40ch] font-mono text-[13px] leading-[1.7] text-bone/80 [text-shadow:0_1px_12px_rgba(10,11,10,0.9)]">
+          <p class="max-w-[42ch] font-sub text-[15px] font-medium leading-[1.6] text-bone/85 [text-shadow:0_1px_12px_rgba(10,11,10,0.9)]">
             Three real apps, designed and engineered end to end &mdash; <span class="text-bone">iOS, Android &amp; web</span>.
             From React Three Fiber interfaces to Supabase backends. No mockups. Live software.
           </p>
@@ -112,13 +112,28 @@ const projects = (await getCollection("projects")).sort((a, b) => a.data.order -
     <section id="work" class="scroll-mt-20 pt-24">
       <div class="flex flex-wrap items-center justify-between gap-4 border-b border-line pb-3">
         <span class="font-mono text-[11px] uppercase tracking-[0.16em] text-acid"
-          >// Selected work &mdash; 003 specimens</span
+          >// Selected work</span
         >
         <h2 class="font-display text-[30px] uppercase tracking-[0.02em]">The Work</h2>
-        <span class="font-mono text-[11px] uppercase tracking-[0.12em] text-steel">Open a specimen for the dossier</span>
+        <span class="font-mono text-[11px] uppercase tracking-[0.12em] text-steel"
+          >Three flagships &mdash; each <span class="text-bone">live</span> &amp; <span class="text-bone">open source</span></span
+        >
       </div>
       <div class="mt-6 grid gap-4 md:grid-cols-3">
         {projects.map((project) => <ProjectCard project={project} />)}
+      </div>
+      <div
+        class="mt-6 flex flex-wrap items-center justify-between gap-x-6 gap-y-3 border-t border-line pt-4 font-mono text-[11px] uppercase tracking-[0.12em] text-steel"
+      >
+        <span>Shown in depth, on purpose &mdash; not the whole repo list</span>
+        <a
+          href="https://github.com/ginoleeswan"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 text-acid underline-offset-4 hover:underline"
+        >
+          More on GitHub &#8599;
+        </a>
       </div>
     </section>
 
@@ -132,7 +147,7 @@ const projects = (await getCollection("projects")).sort((a, b) => a.data.order -
           Let&rsquo;s build<br />something <span class="text-acid">real.</span>
         </h2>
         <div class="font-mono text-[12px] leading-relaxed text-steel">
-          <p class="mb-5 text-bone/80">Have a product in mind, or a role to fill? Open a channel.</p>
+          <p class="mb-5 font-sub text-[15px] font-medium text-bone/85">Have a product in mind, or a role to fill? Open a channel.</p>
           <a
             href={`mailto:${EMAIL}`}
             class="inline-flex items-center gap-3 bg-flare px-6 py-3 font-sub text-[14px] font-black uppercase tracking-[0.04em] text-void transition-transform hover:-translate-y-0.5"

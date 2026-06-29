@@ -3,42 +3,17 @@ import { Icon } from "astro-icon/components";
 import { techIcon } from "../../lib/icons";
 const { items } = Astro.props as { items: string[] };
 
-// Icon-only row: keep techs that resolve to a logo, drop the rest. Techs that
-// share an icon (e.g. Expo + expo-router) collapse to one mark whose tooltip
-// lists every name under it. First-seen order.
-type Entry = { icon: string; names: string[] };
-const entries: Entry[] = [];
-const byIcon = new Map<string, Entry>();
-
-for (const name of items) {
-  const icon = techIcon(name);
-  if (!icon) continue;
-  const existing = byIcon.get(icon);
-  if (existing) {
-    existing.names.push(name);
-  } else {
-    const entry: Entry = { icon, names: [name] };
-    byIcon.set(icon, entry);
-    entries.push(entry);
-  }
-}
+// Visible, scannable stack: every tech gets a labeled chip — logo when one
+// exists, name always shown. Recruiters read the stack at a glance; nothing
+// hides behind a hover (which doesn't exist on touch) and nothing gets dropped.
+const chips = items.map((name) => ({ name, icon: techIcon(name) }));
 ---
-<div class="flex flex-wrap items-center gap-x-7 gap-y-5">
+<div class="flex flex-wrap gap-2">
   {
-    entries.map((e) => (
-      <span class="group relative inline-flex items-center" tabindex="0" aria-label={e.names.join(", ")}>
-        <Icon
-          name={e.icon}
-          class="h-7 w-7 text-steel transition-colors duration-150 group-hover:text-acid group-focus-visible:text-acid"
-        />
-        {e.names.length > 1 && (
-          <span class="ml-1 font-mono text-[10px] font-bold leading-none text-steel transition-colors duration-150 group-hover:text-acid group-focus-visible:text-acid">
-            &times;{e.names.length}
-          </span>
-        )}
-        <span class="pointer-events-none absolute -top-8 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap border border-acid bg-void px-2 py-1 font-mono text-[10px] uppercase tracking-[0.1em] text-acid opacity-0 transition-opacity duration-150 group-hover:opacity-100 group-focus-visible:opacity-100">
-          {e.names.join(" · ")}
-        </span>
+    chips.map(({ name, icon }) => (
+      <span class="inline-flex items-center gap-2 border border-line px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.08em] text-bone/75 transition-colors duration-150 hover:border-acid hover:text-acid">
+        {icon && <Icon name={icon} class="h-3.5 w-3.5 shrink-0" />}
+        {name}
       </span>
     ))
   }

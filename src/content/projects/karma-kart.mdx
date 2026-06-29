@@ -20,11 +20,37 @@ repoUrl: "https://github.com/ginoleeswan/karma-kart"
 ---
 
 ## The problem
-Shoppers want to align purchases with their values but lack the data at point of sale.
+Plenty of people want to shop their values, but at the shelf there's no data and no time —
+ethics research doesn't fit in the three seconds before something goes in the cart. Karma Kart
+puts a verdict in those three seconds.
 
 ## What I built
-A barcode-scanning app that computes a personalized Karma Score for a product's parent
-company across eight values, enriched by Gemini 2.5 and Open Food Facts data.
+A barcode scanner that resolves a product to its parent company and returns a personalized
+**Karma Score** (0–100) across eight values, on a single **Expo SDK 55** codebase for iOS,
+Android, and Web. Scans hit a Supabase Edge Function that enriches data with **Gemini 2.5
+Flash**; product lookups fan out across Open Food Facts in a five-source waterfall so one
+source's missing field isn't a dead end.
+
+## Decisions that mattered
+**The score is personal, and the math is testable.** An onboarding "this or that" quiz sets
+per-value weights; the score normalizes those weights and sums them against company pillar
+scores. I kept that algorithm in a pure `lib/` module with no React Native imports, so it runs
+under Jest in milliseconds and the grading is provable, not vibes.
+
+**Payments split by platform on purpose.** Native iOS/Android monetize through **RevenueCat**
+to satisfy Apple/Google in-app-purchase rules, while the web tier runs on **Paddle**. One
+subscription concept, two payment rails — chosen to match each platform's constraints instead
+of fighting them.
+
+**The AI key is server-side only.** Gemini runs inside the Edge Function with the key stored as
+a Supabase secret, never in the app bundle.
+
+## What was hard
+Trusting third-party product data. Barcode databases are full of gaps and conflicts, so I built
+the lookup as a ranked waterfall across five sources and let Gemini handle *enrichment* rather
+than be the source of truth — the score still resolves when the data is thin.
 
 ## Outcome
-Conscience-driven shopping on iOS, Android, and Web, monetized with RevenueCat.
+A store-ready app on iOS, Android, and Web with real monetization (RevenueCat + Paddle),
+product analytics (PostHog), crash reporting (Sentry), and Maestro end-to-end flows — a
+complete, shippable product, not a prototype.
