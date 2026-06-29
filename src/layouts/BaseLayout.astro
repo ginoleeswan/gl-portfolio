@@ -3,6 +3,7 @@ import { ClientRouter } from "astro:transitions";
 import "../styles/global.css";
 import { buildMeta } from "../lib/seo";
 import VercelAnalytics from "../components/react/Analytics";
+import Backdrop from "../components/react/Backdrop";
 const { title, description, image } = Astro.props;
 const meta = buildMeta({ title, description, image });
 ---
@@ -24,12 +25,13 @@ const meta = buildMeta({ title, description, image });
     <ClientRouter />
   </head>
   <body>
+    <Backdrop client:idle mode="dither" />
     <div class="grain" aria-hidden="true"></div>
     <i class="crosshair crosshair-tl" aria-hidden="true"></i>
     <i class="crosshair crosshair-tr" aria-hidden="true"></i>
     <i class="crosshair crosshair-bl" aria-hidden="true"></i>
     <i class="crosshair crosshair-br" aria-hidden="true"></i>
-    <slot />
+    <div class="relative z-[1]"><slot /></div>
     <VercelAnalytics client:idle />
   </body>
 </html>
