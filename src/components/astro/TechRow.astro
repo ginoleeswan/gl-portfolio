@@ -2,26 +2,44 @@
 import { Icon } from "astro-icon/components";
 import { techIcon } from "../../lib/icons";
 const { items } = Astro.props as { items: string[] };
+
+// Icon-only row: keep techs that resolve to a logo, drop the rest. Techs that
+// share an icon (e.g. Expo + expo-router) collapse to one mark whose tooltip
+// lists every name under it. First-seen order.
+type Entry = { icon: string; names: string[] };
+const entries: Entry[] = [];
+const byIcon = new Map<string, Entry>();
+
+for (const name of items) {
+  const icon = techIcon(name);
+  if (!icon) continue;
+  const existing = byIcon.get(icon);
+  if (existing) {
+    existing.names.push(name);
+  } else {
+    const entry: Entry = { icon, names: [name] };
+    byIcon.set(icon, entry);
+    entries.push(entry);
+  }
+}
 ---
 <div class="flex flex-wrap items-center gap-x-7 gap-y-5">
   {
-    items.map((name) => {
-      const icon = techIcon(name);
-      return icon ? (
-        <span class="group relative inline-flex items-center" tabindex="0" aria-label={name}>
-          <Icon
-            name={icon}
-            class="h-7 w-7 text-steel transition-colors duration-150 group-hover:text-acid group-focus-visible:text-acid"
-          />
-          <span class="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap border border-acid bg-void px-2 py-1 font-mono text-[10px] uppercase tracking-[0.1em] text-acid opacity-0 transition-opacity duration-150 group-hover:opacity-100 group-focus-visible:opacity-100">
-            {name}
+    entries.map((e) => (
+      <span class="group relative inline-flex items-center" tabindex="0" aria-label={e.names.join(", ")}>
+        <Icon
+          name={e.icon}
+          class="h-7 w-7 text-steel transition-colors duration-150 group-hover:text-acid group-focus-visible:text-acid"
+        />
+        {e.names.length > 1 && (
+          <span class="ml-1 font-mono text-[10px] font-bold leading-none text-steel transition-colors duration-150 group-hover:text-acid group-focus-visible:text-acid">
+            &times;{e.names.length}
           </span>
+        )}
+        <span class="pointer-events-none absolute -top-8 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap border border-acid bg-void px-2 py-1 font-mono text-[10px] uppercase tracking-[0.1em] text-acid opacity-0 transition-opacity duration-150 group-hover:opacity-100 group-focus-visible:opacity-100">
+          {e.names.join(" · ")}
         </span>
-      ) : (
-        <span class="border border-line px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.1em] text-steel">
-          {name}
-        </span>
-      );
-    })
+      </span>
+    ))
   }
 </div>
