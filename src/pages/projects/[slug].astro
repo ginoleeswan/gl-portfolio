@@ -20,6 +20,18 @@ const { platforms, problem, approach, decisions, challenge, metrics } = project.
 
 const t = PROJECT_THEMES[accent];
 const no = String(order).padStart(2, "0");
+
+// estimated read time for the dossier — counts every text field a reader actually scans
+const dossierText = [
+  tagline,
+  problem,
+  approach,
+  challenge,
+  ...decisions.flatMap((d) => [d.title, d.body]),
+  ...metrics.map((m) => m.label),
+].join(" ");
+const words = dossierText.trim().split(/\s+/).filter(Boolean).length;
+const readMinutes = Math.max(1, Math.round(words / 200));
 const logoName = accent === "myth" ? "mythique" : accent === "glow" ? "glow" : "karma";
 
 // prev / next specimen, cycling with wrap-around
@@ -127,6 +139,7 @@ const post = (await getCollection("writing")).find((p) => p.data.projectSlug ===
         <span class="hidden h-3.5 w-px bg-line sm:block"></span>
         <span class="inline-flex items-center gap-1.5"><Icon name="lucide:user" class="h-3.5 w-3.5" />{role}</span>
         <span class="inline-flex items-center gap-1.5"><Icon name="lucide:calendar" class="h-3.5 w-3.5" />{year}</span>
+        <span class="inline-flex items-center gap-1.5"><Icon name="lucide:clock" class="h-3.5 w-3.5" />{readMinutes} min read</span>
         <span class="flex-1"></span>
         <span class="inline-flex items-center gap-2 text-acid">
           <span class="inline-block h-[7px] w-[7px] rounded-full bg-acid"></span>Shipped
