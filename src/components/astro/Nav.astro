@@ -8,6 +8,10 @@ const links = [
   { n: "03", label: "About", href: "/about", match: "/about" },
 ];
 const pathname = Astro.url.pathname;
+// Page links light for the whole section, not just the index (e.g. /writing/<post>).
+const isActive = (m?: string) => !!m && (pathname === m || pathname.startsWith(m + "/"));
+// The acid CTA shouts on the homepage hero; on inner/reading pages it goes ghost.
+const isHome = pathname === "/";
 ---
 <header
   class="sticky top-0 z-50 border-b border-line bg-void/80 backdrop-blur supports-[backdrop-filter]:bg-void/65"
@@ -31,7 +35,7 @@ const pathname = Astro.url.pathname;
   </div>
 
   <!-- main bar — segmented control panel -->
-  <nav aria-label="Primary" class="flex min-h-17 items-stretch justify-between">
+  <nav aria-label="Primary" class="flex min-h-14 items-stretch justify-between">
     <a
       href="/"
       aria-label="Gino Swanepoel — home"
@@ -52,10 +56,10 @@ const pathname = Astro.url.pathname;
               <a
                 href={l.href}
                 data-spy={l.spy}
-                aria-current={l.match === pathname ? "true" : undefined}
+                aria-current={isActive(l.match) ? "true" : undefined}
                 class:list={[
                   "nav-cell flex items-center gap-1.5 border-l border-line px-3 text-steel transition-colors hover:bg-acid/10 hover:text-acid sm:px-6",
-                  l.match === pathname && "is-active",
+                  isActive(l.match) && "is-active",
                 ]}
               >
                 <span class="hidden text-acid/70 sm:inline">{l.n}</span>
@@ -68,9 +72,12 @@ const pathname = Astro.url.pathname;
       <a
         href="/#contact"
         data-spy="contact"
-        class="nav-contact flex items-center gap-2 border-l border-line bg-acid px-4 font-mono text-[11px] font-bold uppercase tracking-[0.16em] text-void transition-colors hover:bg-bone sm:px-6"
+        class:list={[
+          "nav-contact flex items-center gap-2 border-l border-line px-4 font-mono text-[11px] font-bold uppercase tracking-[0.16em] transition-colors sm:px-6",
+          isHome ? "bg-acid text-void hover:bg-bone" : "text-acid hover:bg-acid hover:text-void",
+        ]}
       >
-        <span class="inline-block h-1.5 w-1.5 rounded-full bg-void"></span>
+        <span class="inline-block h-1.5 w-1.5 rounded-full bg-current"></span>
         Contact
       </a>
     </div>

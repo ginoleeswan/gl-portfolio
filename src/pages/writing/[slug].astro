@@ -26,10 +26,9 @@ const projectTitle = projectEntry?.data.title ?? projectSlug;
   <Nav />
   <main class="mx-auto max-w-3xl px-5 py-12 sm:px-8 lg:px-12">
     <div
-      class="flex items-center justify-between border-b border-line pb-3 font-mono text-[11px] uppercase tracking-[0.14em] text-steel"
+      class="border-b border-line pb-3 font-mono text-[11px] uppercase tracking-[0.14em] text-steel"
     >
       <a href="/writing" class="hover:text-acid">&#8592; Notes</a>
-      <span>{fmt}</span>
     </div>
 
     <div class="mt-8 flex flex-wrap gap-2">
@@ -45,7 +44,7 @@ const projectTitle = projectEntry?.data.title ?? projectSlug;
     <h1 class="mt-5 font-display text-[clamp(40px,8vw,84px)] uppercase leading-[0.85]">{title}</h1>
     <p class="mt-5 max-w-[60ch] font-sub text-[17px] font-medium leading-[1.6] text-bone/80">{dek}</p>
     <div class="mt-5 font-mono text-[11px] uppercase tracking-[0.12em] text-steel">
-      {readingMinutes} min read &middot; on{" "}
+      {fmt} &middot; {readingMinutes} min read &middot; on{" "}
       <a href={`/projects/${projectSlug}`} class="text-acid underline-offset-4 hover:underline">{projectTitle}</a>
     </div>
 

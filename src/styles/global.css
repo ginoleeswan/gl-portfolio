@@ -200,13 +200,13 @@ body {
   animation: nav-pulse 2.4s ease-in-out infinite;
 }
 
-/* fine registration plus — rail-scale sibling of the corner .crosshair marks */
+/* registration plus — inline sibling of the corner .crosshair marks, identical size */
 .tick-plus {
   position: relative;
   display: inline-block;
   flex: none;
-  width: 9px;
-  height: 9px;
+  width: 14px;
+  height: 14px;
 }
 .tick-plus::before,
 .tick-plus::after {
@@ -215,16 +215,16 @@ body {
   background: var(--color-acid);
 }
 .tick-plus::before {
-  left: 4px;
+  left: 6px;
   top: 0;
-  width: 1px;
-  height: 9px;
+  width: 2px;
+  height: 14px;
 }
 .tick-plus::after {
-  top: 4px;
+  top: 6px;
   left: 0;
-  height: 1px;
-  width: 9px;
+  height: 2px;
+  width: 14px;
 }
 @keyframes nav-pulse {
   0%, 100% { opacity: 1; box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-acid) 70%, transparent); }
