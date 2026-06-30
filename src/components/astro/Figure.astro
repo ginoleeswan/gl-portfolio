@@ -1,0 +1,38 @@
+---
+// Inline illustration plate for writing posts. Mirrors the dossier "Stills"
+// frame: halftone-textured panel, themed bloom behind a transparent-ground
+// duotone image, optional mono caption. Import into an .mdx file to place an
+// image between sections.
+interface Props {
+  src: string;
+  alt: string;
+  caption?: string;
+  // accent bloom behind the art; defaults to the hero's periwinkle
+  glow?: string;
+}
+const { src, alt, caption, glow = "rgba(156, 162, 210, 0.12)" } = Astro.props;
+---
+
+<figure class="my-9">
+  <div class="halftone relative overflow-hidden rounded-xl border border-line bg-void/60">
+    <div
+      class="absolute inset-0 z-0"
+      style={`background: radial-gradient(60% 62% at 50% 44%, ${glow}, transparent 72%)`}
+    >
+    </div>
+    <img
+      src={src}
+      alt={alt}
+      loading="lazy"
+      decoding="async"
+      class="relative z-[1] mx-auto block max-h-[440px] w-auto object-contain py-5"
+    />
+  </div>
+  {
+    caption && (
+      <figcaption class="mt-2 font-mono text-[10px] uppercase tracking-[0.12em] text-steel">
+        {caption}
+      </figcaption>
+    )
+  }
+</figure>

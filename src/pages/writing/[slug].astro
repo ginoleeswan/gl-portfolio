@@ -11,7 +11,7 @@ export async function getStaticPaths() {
 }
 
 const { post } = Astro.props as { post: CollectionEntry<"writing"> };
-const { title, dek, date, project, projectSlug, readingMinutes, tags } = post.data;
+const { title, dek, date, project, projectSlug, readingMinutes, tags, coverImage, coverAlt } = post.data;
 const { Content } = await render(post);
 
 const t = PROJECT_THEMES[project];
@@ -24,38 +24,67 @@ const projectTitle = projectEntry?.data.title ?? projectSlug;
 
 <BaseLayout title={title} description={dek}>
   <Nav />
-  <main class="mx-auto max-w-3xl px-5 py-12 sm:px-8 lg:px-12">
-    <div
-      class="border-b border-line pb-3 font-mono text-[11px] uppercase tracking-[0.14em] text-steel"
-    >
-      <a href="/writing" class="hover:text-acid">&#8592; Notes</a>
-    </div>
+  <main class="px-5 py-12 sm:px-8 lg:px-12">
+    <!-- EDITORIAL HERO — wide split: copy left, floating illustration right -->
+    <header class="mx-auto max-w-5xl">
+      <div class="border-b border-line pb-3 font-mono text-[11px] uppercase tracking-[0.14em] text-steel">
+        <a href="/writing" class="hover:text-acid">&#8592; Notes</a>
+      </div>
 
-    <div class="mt-8 flex flex-wrap gap-2">
-      {
-        tags.map((tag) => (
-          <span class="border border-line px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.1em]" style={`color:${t.glyph}`}>
-            {tag}
-          </span>
-        ))
-      }
-    </div>
+      <div
+        class:list={[
+          "mt-8 grid items-center gap-x-10 gap-y-8",
+          coverImage && "lg:grid-cols-[1.05fr_minmax(0,38%)]",
+        ]}
+      >
+        <div class="min-w-0">
+          <div class="flex flex-wrap gap-2">
+            {
+              tags.map((tag) => (
+                <span class="border border-line px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.1em]" style={`color:${t.glyph}`}>
+                  {tag}
+                </span>
+              ))
+            }
+          </div>
 
-    <h1 class="mt-5 font-display text-[clamp(40px,8vw,84px)] uppercase leading-[0.85]">{title}</h1>
-    <p class="mt-5 max-w-[60ch] font-sub text-[17px] font-medium leading-[1.6] text-bone/80">{dek}</p>
-    <div class="mt-5 font-mono text-[11px] uppercase tracking-[0.12em] text-steel">
-      {fmt} &middot; {readingMinutes} min read &middot; on{" "}
-      <a href={`/projects/${projectSlug}`} class="text-acid underline-offset-4 hover:underline">{projectTitle}</a>
-    </div>
+          <h1 class="mt-5 font-display text-[clamp(40px,7vw,76px)] uppercase leading-[0.85]">{title}</h1>
+          <p class="mt-5 max-w-[54ch] font-sub text-[17px] font-medium leading-[1.6] text-bone/80">{dek}</p>
+          <div class="mt-5 font-mono text-[11px] uppercase tracking-[0.12em] text-steel">
+            {fmt} &middot; {readingMinutes} min read &middot; on{" "}
+            <a href={`/projects/${projectSlug}`} class="text-acid underline-offset-4 hover:underline">{projectTitle}</a>
+          </div>
+        </div>
 
-    <div class="mt-10 h-px w-full bg-line"></div>
+        {
+          coverImage && (
+            <figure class="relative">
+              {/* accent bloom sits behind the art and bleeds past it, melting into the page */}
+              <div
+                class="pointer-events-none absolute -inset-x-8 -inset-y-6 z-0"
+                style={`background: radial-gradient(60% 60% at 55% 48%, color-mix(in srgb, ${t.glyph} 26%, transparent), transparent 72%)`}
+              />
+              <img
+                src={coverImage}
+                alt={coverAlt ?? `${title} — cover illustration`}
+                fetchpriority="high"
+                class="relative z-[1] mx-auto block w-full max-w-[440px] object-contain lg:ml-auto lg:mr-0"
+              />
+            </figure>
+          )
+        }
+      </div>
+    </header>
 
-    <article class="prose mt-10"><Content /></article>
+    <div class="mx-auto mt-12 max-w-3xl">
+      <div class="h-px w-full bg-line"></div>
 
-    <a
-      href={`/projects/${projectSlug}`}
-      class="group mt-14 flex items-center justify-between gap-4 border border-line p-5 no-underline transition-colors hover:border-acid"
-    >
+      <article class="prose mt-10"><Content /></article>
+
+      <a
+        href={`/projects/${projectSlug}`}
+        class="group mt-14 flex items-center justify-between gap-4 border border-line p-5 no-underline transition-colors hover:border-acid"
+      >
       <span class="min-w-0">
         <span class="block font-mono text-[11px] uppercase tracking-[0.16em] text-acid">// See it shipped</span>
         <span class="mt-1 block font-sub text-[17px] font-bold text-bone group-hover:text-acid">
@@ -63,7 +92,8 @@ const projectTitle = projectEntry?.data.title ?? projectSlug;
         </span>
       </span>
       <span class="shrink-0 font-display text-[32px] leading-none text-acid">&#8599;</span>
-    </a>
+      </a>
+    </div>
   </main>
   <Footer />
 </BaseLayout>

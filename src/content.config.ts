@@ -44,6 +44,9 @@ const writing = defineCollection({
     projectSlug: z.string(),
     readingMinutes: z.number(),
     tags: z.array(z.string()).default([]),
+    // optional duotone cover illustration (transparent ground) shown above the article body
+    coverImage: z.string().optional(),
+    coverAlt: z.string().optional(),
   }),
 });
 
