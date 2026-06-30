@@ -3,52 +3,76 @@ import { Icon } from "astro-icon/components";
 // Logo is "home", so no redundant Index link. Anchor links get scroll-spy
 // active states (data-spy); page links match on pathname.
 const links = [
-  { label: "Work", href: "/#work", spy: "work" },
-  { label: "Notes", href: "/writing", match: "/writing" },
-  { label: "About", href: "/about", match: "/about" },
+  { n: "01", label: "Work", href: "/#work", spy: "work" },
+  { n: "02", label: "Notes", href: "/writing", match: "/writing" },
+  { n: "03", label: "About", href: "/about", match: "/about" },
 ];
 const pathname = Astro.url.pathname;
 ---
-<nav
-  aria-label="Primary"
-  class="sticky top-0 z-50 flex items-center justify-between border-b border-line bg-void/80 px-6 py-4 backdrop-blur supports-[backdrop-filter]:bg-void/65 sm:px-12"
+<header
+  class="sticky top-0 z-50 border-b border-line bg-void/80 backdrop-blur supports-[backdrop-filter]:bg-void/65"
 >
-  <a
-    href="/"
-    aria-label="Gino Swanepoel — home"
-    class="group inline-flex items-center gap-2.5 font-sub text-sm font-black tracking-tight text-bone"
+  <!-- data rail — persistent system readout (identity + availability) -->
+  <div
+    class="flex items-center justify-between border-b border-line/70 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.2em] text-steel sm:px-4"
   >
-    <Icon
-      name="gino"
-      class="h-6 w-6 text-acid transition-transform duration-300 ease-out group-hover:-rotate-[10deg]"
-    />
-    <span class="hidden sm:inline">GINO SWANEPOEL</span>
-  </a>
-
-  <div class="flex items-center gap-3 sm:gap-6">
-    <ul class="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.16em] text-steel sm:gap-6">
-      {
-        links.map((l) => (
-          <li>
-            <a
-              href={l.href}
-              data-spy={l.spy}
-              aria-current={l.match === pathname ? "page" : undefined}
-              class:list={["nav-link relative transition-colors hover:text-acid", l.match === pathname && "is-active text-acid"]}
-            >
-              {l.label}
-            </a>
-          </li>
-        ))
-      }
-    </ul>
-    <a
-      href="/#contact"
-      data-spy="contact"
-      class="nav-cta inline-flex items-center gap-2 border border-acid/55 px-3 py-1.5 font-mono text-[11px] font-bold uppercase tracking-[0.16em] text-acid transition-colors hover:bg-acid hover:text-void"
-    >
-      <span class="nav-dot inline-block h-1.5 w-1.5 rounded-full bg-acid"></span>
-      Contact
-    </a>
+    <span class="flex items-center gap-2.5">
+      <span class="tick-plus" aria-hidden="true"></span>
+      <span><span class="text-acid">//</span> GINO_SWANEPOEL</span>
+    </span>
+    <span class="hidden sm:inline">DESIGN ╱ DEVELOPMENT</span>
+    <span class="flex items-center gap-2.5">
+      <a href="/#contact" class="inline-flex items-center gap-1.5 transition-colors hover:text-acid">
+        <span class="nav-dot inline-block h-1.5 w-1.5 rounded-full bg-acid"></span>
+        Open for work
+      </a>
+      <span class="tick-plus" aria-hidden="true"></span>
+    </span>
   </div>
-</nav>
+
+  <!-- main bar — segmented control panel -->
+  <nav aria-label="Primary" class="flex min-h-17 items-stretch justify-between">
+    <a
+      href="/"
+      aria-label="Gino Swanepoel — home"
+      class="group inline-flex items-center gap-3 px-4 font-sub text-[15px] font-black tracking-tight text-bone sm:px-6"
+    >
+      <Icon
+        name="gino"
+        class="h-7 w-7 text-acid transition-transform duration-300 ease-out group-hover:-rotate-[10deg]"
+      />
+      <span class="hidden sm:inline">GINO SWANEPOEL</span>
+    </a>
+
+    <div class="flex items-stretch">
+      <ul class="flex items-stretch font-mono text-[11px] uppercase tracking-[0.16em]">
+        {
+          links.map((l) => (
+            <li class="flex">
+              <a
+                href={l.href}
+                data-spy={l.spy}
+                aria-current={l.match === pathname ? "true" : undefined}
+                class:list={[
+                  "nav-cell flex items-center gap-1.5 border-l border-line px-3 text-steel transition-colors hover:bg-acid/10 hover:text-acid sm:px-6",
+                  l.match === pathname && "is-active",
+                ]}
+              >
+                <span class="hidden text-acid/70 sm:inline">{l.n}</span>
+                {l.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <a
+        href="/#contact"
+        data-spy="contact"
+        class="nav-contact flex items-center gap-2 border-l border-line bg-acid px-4 font-mono text-[11px] font-bold uppercase tracking-[0.16em] text-void transition-colors hover:bg-bone sm:px-6"
+      >
+        <span class="inline-block h-1.5 w-1.5 rounded-full bg-void"></span>
+        Contact
+      </a>
+    </div>
+  </nav>
+</header>

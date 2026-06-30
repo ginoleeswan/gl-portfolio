@@ -176,34 +176,55 @@ body {
   color: var(--color-bone);
 }
 
-/* nav — animated underline marker on hover + active (scroll-spy / current page) */
-.nav-link::after {
+/* nav — segmented control-panel cells: active (scroll-spy / current page)
+   lights the cell acid with an inset bottom bar */
+.nav-cell {
+  position: relative;
+}
+.nav-cell.is-active {
+  color: var(--color-acid);
+  background: color-mix(in srgb, var(--color-acid) 8%, transparent);
+}
+.nav-cell.is-active::after {
   content: "";
   position: absolute;
   left: 0;
   right: 0;
-  bottom: -5px;
+  bottom: 0;
   height: 2px;
   background: var(--color-acid);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.25s ease;
-}
-.nav-link:hover::after,
-.nav-link.is-active::after {
-  transform: scaleX(1);
-}
-.nav-link.is-active {
-  color: var(--color-acid);
 }
 
-/* nav contact CTA — "available" pulse; hide the dot once the chip is hovered/filled */
+/* nav data-rail — "available" pulse on the open-for-work dot */
 .nav-dot {
   animation: nav-pulse 2.4s ease-in-out infinite;
 }
-.nav-cta:hover .nav-dot {
-  background: var(--color-void);
-  animation: none;
+
+/* fine registration plus — rail-scale sibling of the corner .crosshair marks */
+.tick-plus {
+  position: relative;
+  display: inline-block;
+  flex: none;
+  width: 9px;
+  height: 9px;
+}
+.tick-plus::before,
+.tick-plus::after {
+  content: "";
+  position: absolute;
+  background: var(--color-acid);
+}
+.tick-plus::before {
+  left: 4px;
+  top: 0;
+  width: 1px;
+  height: 9px;
+}
+.tick-plus::after {
+  top: 4px;
+  left: 0;
+  height: 1px;
+  width: 9px;
 }
 @keyframes nav-pulse {
   0%, 100% { opacity: 1; box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-acid) 70%, transparent); }

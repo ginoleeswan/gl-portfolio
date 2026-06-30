@@ -30,8 +30,7 @@ const meta = buildMeta({ title, description, image });
   <body>
     <Backdrop client:idle mode="dither" />
     <div class="grain" aria-hidden="true"></div>
-    <i class="crosshair crosshair-tl" aria-hidden="true"></i>
-    <i class="crosshair crosshair-tr" aria-hidden="true"></i>
+    <!-- top corners are framed by the sticky header; keep only the bottom registration marks -->
     <i class="crosshair crosshair-bl" aria-hidden="true"></i>
     <i class="crosshair crosshair-br" aria-hidden="true"></i>
     <div class="relative z-[1]"><slot /></div>
