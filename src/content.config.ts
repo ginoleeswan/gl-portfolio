@@ -18,6 +18,8 @@ const projects = defineCollection({
     heroInset: z.string().default("0"),
     gallery: z.array(z.object({ src: z.string(), label: z.string() })).default([]),
     techStack: z.array(z.string()),
+    // short product classification shown on the work card (e.g. "CODEX") — not the tech
+    cardTag: z.string(),
     liveUrl: z.url().optional(),
     repoUrl: z.url(),
     // structured, glanceable dossier content (rendered as spec bar + cards + tiles)

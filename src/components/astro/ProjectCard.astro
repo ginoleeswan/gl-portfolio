@@ -3,11 +3,10 @@ import { Icon } from "astro-icon/components";
 import type { CollectionEntry } from "astro:content";
 import { PROJECT_THEMES } from "../../lib/projectThemes";
 const { project } = Astro.props as { project: CollectionEntry<"projects"> };
-const { title, tagline, slug, accent, kana, order, techStack } = project.data;
+const { title, tagline, slug, accent, kana, order, cardTag } = project.data;
 
 const t = PROJECT_THEMES[accent];
 const no = String(order).padStart(2, "0");
-const primary = techStack[0];
 
 // Easter egg: each card's 3-row block is its own initials in ASCII binary.
 const CODES: Record<typeof accent, string> = { myth: "MYT", glow: "GLO", karma: "KAR" };
@@ -52,7 +51,7 @@ const binary = [...CODES[accent]].map((c) => c.charCodeAt(0).toString(2).padStar
         style={`color:${t.name}`}
       />
       <span class="font-mono text-[11px] font-bold uppercase tracking-[0.1em]" style={`color:${t.body}`}>
-        N&deg;{no} &mdash; {primary}
+        N&deg;{no} &mdash; {cardTag}
       </span>
     </div>
     <h3 data-scramble class="font-display text-[52px] uppercase leading-[0.82] tracking-[0.02em]" style={`view-transition-name: title-${slug}; color:${t.name}`}>
