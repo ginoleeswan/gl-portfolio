@@ -59,8 +59,9 @@ const post = (await getCollection("writing")).find((p) => p.data.projectSlug ===
           <a href="/#work" style={`color:${t.chrome}`}>&#8592; Index</a>
           <span>Dossier N&deg;{no} / {year}</span>
         </div>
+        {/* kana spine — vertical accent that starts below the chrome line and descends BEHIND the poster screenshot (raised above this layer) on desktop */}
         <div
-          class="pointer-events-none absolute right-0 top-4 hidden font-sub text-[44px] font-black leading-none opacity-90 sm:block"
+          class="pointer-events-none absolute right-0 top-10 hidden font-sub text-[44px] font-black leading-none opacity-90 sm:block"
           style={`color:${t.glyph}; writing-mode: vertical-rl`}
         >
           {kana}
@@ -72,7 +73,7 @@ const post = (await getCollection("writing")).find((p) => p.data.projectSlug ===
         <h1 class="mt-4 font-display text-[clamp(56px,11vw,150px)] uppercase leading-[0.82] tracking-[0.01em]" style={`view-transition-name: title-${slug}; color:${t.name}`}>
           {title}
         </h1>
-        <p class="mt-4 max-w-[44ch] font-mono text-[14px] leading-relaxed" style={`color:${t.body}`}>{tagline}</p>
+        <p class="mt-8 max-w-[44ch] font-mono text-[14px] leading-relaxed" style={`color:${t.body}`}>{tagline}</p>
         <div class="mt-7 flex flex-wrap gap-3">
           {
             liveUrl && (
@@ -97,7 +98,7 @@ const post = (await getCollection("writing")).find((p) => p.data.projectSlug ===
       </div>
     </header>
     <!-- product screenshot — fills the poster's right, bleeds slightly over the seam (desktop only) -->
-    <div class="pointer-events-none absolute inset-x-0 bottom-0 z-[5] mx-auto hidden max-w-5xl px-5 sm:px-8 md:block lg:px-12">
+    <div class="pointer-events-none absolute inset-x-0 bottom-0 z-[7] mx-auto hidden max-w-5xl px-5 sm:px-8 md:block lg:px-12">
       <img
         src={heroImage}
         alt={`${title} — product screenshot`}
